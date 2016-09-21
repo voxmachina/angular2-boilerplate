@@ -1,2 +1,1 @@
-# igeni.us
-Personal website source code
+igeni.us personal website
