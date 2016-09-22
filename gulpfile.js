@@ -38,10 +38,10 @@ gulp.task('copy-rxjs', function() {
 });
 
 /**
- * Copy index.html to build directory
+ * Copy html files to build directory
  */
-gulp.task('copy-index', function() {
-  return gulp.src('index.html').pipe(gulp.dest('build'));
+gulp.task('copy-html', function() {
+  return gulp.src('./**/*.html').pipe(gulp.dest('build'));
 });
 
 /**
@@ -76,16 +76,12 @@ gulp.task('compile-typescript', function() {
  * Compile sass files into css into the build folder
  */
 gulp.task('sass', function () {
-
-  let input = './sass/**/*.scss';
-  let output = './build/css';
-
   return gulp
-    .src(input)
+    .src('./**/*.scss')
     .pipe(sass())
-    .pipe(gulp.dest(output));
+    .pipe(gulp.dest('build'));
 });
 
 gulp.task('default', ['compile-typescript']);
-gulp.task('copy', ['copy-scripts', 'copy-index', 'copy-config', 'copy-rxjs']);
+gulp.task('copy', ['copy-scripts', 'copy-html', 'copy-config', 'copy-rxjs']);
 gulp.task('build', ['compile-typescript', 'copy', 'sass']);
