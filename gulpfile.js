@@ -68,7 +68,7 @@ gulp.task('compile-typescript', function() {
         .pipe(ts(tsProject));
 
   return tsResult.js
-    .pipe(sourcemaps.write())
+    .pipe(sourcemaps.write("maps"))
     .pipe(gulp.dest("build"));
 });
 
@@ -78,7 +78,9 @@ gulp.task('compile-typescript', function() {
 gulp.task('sass', function () {
   return gulp
     .src('./**/*.scss')
+    .pipe(sourcemaps.init())
     .pipe(sass())
+    .pipe(sourcemaps.write("maps"))
     .pipe(gulp.dest('build'));
 });
 
