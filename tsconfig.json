@@ -11,7 +11,11 @@
     },
     "compileOnSave": false,
     "buildOnSave": false,
+    "filesGlob": [
+      "**/*.ts"
+    ],
     "exclude": [
-        "node_modules"
+      "node_modules",
+      "typings/**/*.ts"
     ]
 }
