@@ -4,8 +4,10 @@ const gulp = require('gulp');
 const ts = require('gulp-typescript');
 const del = require('del');
 const sourcemaps = require('gulp-sourcemaps');
+const browserify = require('browserify');
+const uglify = require('gulp-uglify');
 const sass = require('gulp-sass');
-
+const pump = require('pump');
 const tsProject = ts.createProject('tsconfig.json');
 
 /**
@@ -41,7 +43,7 @@ gulp.task('copy-rxjs', function() {
  * Copy html files to build directory
  */
 gulp.task('copy-html', function() {
-  return gulp.src('./**/*.html').pipe(gulp.dest('build'));
+  return gulp.src(['./**/*.html', '!node_modules/**/*']).pipe(gulp.dest('build'));
 });
 
 /**
@@ -52,10 +54,18 @@ gulp.task('copy-config', function() {
 });
 
 /**
+ * Copies a build to a relase
+ */
+gulp.task('copy-build', function() {
+  return gulp.src('build/**/*').pipe(gulp.dest('release/'));
+});
+
+/**
  * Cleans build folder
  */
 gulp.task('clean', function (cb) {
   del('build', cb);
+  del('release', cb);
 });
 
 /**
@@ -77,13 +87,28 @@ gulp.task('compile-typescript', function() {
  */
 gulp.task('sass', function () {
   return gulp
-    .src('./**/*.scss')
+    .src(['./**/*.scss', '!node_modules/**/*'])
     .pipe(sourcemaps.init())
     .pipe(sass())
     .pipe(sourcemaps.write("maps"))
     .pipe(gulp.dest('build'));
 });
 
+/**
+ * Compress js files for release
+ */
+gulp.task('uglify', function (cb) {
+  pump([
+        gulp.src(['release/**/*.js', '!release/lib/**/*']),
+        uglify(),
+        gulp.dest('release/')
+    ],
+    cb
+  );
+});
+
 gulp.task('default', ['compile-typescript']);
 gulp.task('copy', ['copy-scripts', 'copy-html', 'copy-config', 'copy-rxjs']);
 gulp.task('build', ['compile-typescript', 'copy', 'sass']);
+gulp.task('prepare-release', ['copy-build']);
+gulp.task('compile-release', ['uglify']);
