@@ -1,0 +1,1 @@
+docker run -p 8080:80 -d -v /Users/pedro/Desktop/dev/igenius/api/www/services:/var/www/igenius/services igenius
