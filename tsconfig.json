@@ -12,10 +12,10 @@
     "compileOnSave": false,
     "buildOnSave": false,
     "filesGlob": [
-      "**/*.ts"
+      "**/*.ts",
+      "**/*.tsx"
     ],
     "exclude": [
-      "node_modules",
-      "typings/**/*.ts"
+      "node_modules"
     ]
 }
