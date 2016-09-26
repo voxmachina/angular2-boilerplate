@@ -130,9 +130,12 @@ gulp.task('uglify', function (cb) {
 });
 
 /**
- * Aux tasks
+ * Watcher
  */
-gulp.task('default', ['compile-typescript']);
+gulp.task('dev', ['build'], function() {
+  gulp.watch(['./**/*.scss'], ['sass']);
+  gulp.watch(['./**/*.ts', './**/*.html'], ['compile-typescript']);
+});
 
 /**
  * Deploy tasks

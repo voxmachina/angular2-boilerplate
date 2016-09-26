@@ -9,5 +9,5 @@ import { MediumService } from "../../services/medium.service";
 })
 
 export class AppComponent {
-  title = "IGenius";
+  title = "iGenius";
 }
