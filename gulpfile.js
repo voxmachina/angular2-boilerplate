@@ -8,6 +8,8 @@ const browserify = require('browserify');
 const uglify = require('gulp-uglify');
 const sass = require('gulp-sass');
 const pump = require('pump');
+const tar = require('gulp-tar');
+const gzip = require('gulp-gzip');
 const tsProject = ts.createProject('tsconfig.json');
 
 /**
@@ -112,3 +114,10 @@ gulp.task('copy', ['copy-scripts', 'copy-html', 'copy-config', 'copy-rxjs']);
 gulp.task('build', ['compile-typescript', 'copy', 'sass']);
 gulp.task('prepare-release', ['copy-build']);
 gulp.task('compile-release', ['uglify']);
+
+gulp.task('compress', () =>
+    gulp.src('release/*')
+        .pipe(tar('archive.tar'))
+        .pipe(gzip())
+        .pipe(gulp.dest('dist'))
+);
