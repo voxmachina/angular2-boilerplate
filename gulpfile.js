@@ -10,7 +10,18 @@ const sass = require('gulp-sass');
 const pump = require('pump');
 const tar = require('gulp-tar');
 const gzip = require('gulp-gzip');
+const GulpSSH = require('gulp-ssh');
+const fs = require('fs');
+const runSequence = require('run-sequence');
 const tsProject = ts.createProject('tsconfig.json');
+const config = require('./config/gulp.json');
+
+let currentDateTimeStamp = new Date().getTime();
+
+let gulpSSH = new GulpSSH({
+  ignoreErrors: false,
+  sshConfig: config.ssh
+});
 
 /**
  * Copy scripts to build/lib directory
@@ -49,6 +60,14 @@ gulp.task('copy-html', function() {
 });
 
 /**
+ * Copy API files to build directory
+ */
+gulp.task('copy-api', function() {
+  return gulp.src(['api/**/*', '!api/Dockerfile', '!api/start', '!api/apache-config.conf'], {dot:true})
+    .pipe(gulp.dest('build/api'));
+});
+
+/**
  * Copy configurations
  */
 gulp.task('copy-config', function() {
@@ -59,13 +78,14 @@ gulp.task('copy-config', function() {
  * Copies a build to a relase
  */
 gulp.task('copy-build', function() {
-  return gulp.src('build/**/*').pipe(gulp.dest('release/'));
+  return gulp.src(['build/**/*'], {dot:true}).pipe(gulp.dest('release/'));
 });
 
 /**
  * Cleans build folder
  */
 gulp.task('clean', function (cb) {
+  del('dist', cb);
   del('build', cb);
   del('release', cb);
 });
@@ -109,15 +129,39 @@ gulp.task('uglify', function (cb) {
   );
 });
 
+/**
+ * Aux tasks
+ */
 gulp.task('default', ['compile-typescript']);
-gulp.task('copy', ['copy-scripts', 'copy-html', 'copy-config', 'copy-rxjs']);
-gulp.task('build', ['compile-typescript', 'copy', 'sass']);
-gulp.task('prepare-release', ['copy-build']);
-gulp.task('compile-release', ['uglify']);
 
-gulp.task('compress', () =>
-    gulp.src('release/*')
-        .pipe(tar('archive.tar'))
+/**
+ * Deploy tasks
+ */
+gulp.task('copy', ['copy-scripts', 'copy-html', 'copy-config', 'copy-rxjs', 'copy-api']);
+gulp.task('build', ['compile-typescript', 'copy', 'sass']);
+gulp.task('release', ['copy-build']);
+gulp.task('compress', ['uglify'], function() {
+    return gulp.src(['release/**/*'], {dot:true})
+        .pipe(tar('release-'+currentDateTimeStamp+'.tar'))
         .pipe(gzip())
         .pipe(gulp.dest('dist'))
-);
+        .pipe(gulpSSH.sftp('write', '/home/dh_voxmachina/igenius_releases/release-'+currentDateTimeStamp+'.tar.gz'));
+});
+
+gulp.task('symlink', ['compress'], function() {
+  let rootDir = '/home/dh_voxmachina/igenius_releases/';
+
+  return gulpSSH
+    .exec([
+      'mkdir '+rootDir+currentDateTimeStamp,
+      'tar -xvf '+rootDir+'release-' + currentDateTimeStamp + '.tar.gz -C '+rootDir+currentDateTimeStamp,
+      'rm -rf '+rootDir+'release-' + currentDateTimeStamp + '.tar.gz',
+      'rm -rf '+rootDir+'current',
+      'ln -s '+rootDir+currentDateTimeStamp+' '+rootDir+'current'
+    ]);
+});
+
+gulp.task('deploy', function(done) {
+  runSequence('build', 'release', 'compress', 'symlink', 'clean');
+  done();
+});
