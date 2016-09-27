@@ -1,3 +1,33 @@
+@import "../node_modules/bootstrap/scss/normalize";
+
+$enable-flex: true;
+
+@import "https://fonts.googleapis.com/css?family=Open+Sans";
+
 body {
+  font-family: 'Open Sans', sans-serif;
   padding: 20px;
+}
+
+a {
+  transition: color .4s;
+  color: #265C83;
+
+  &:link, &:visited {
+    color: #265C83;
+  }
+
+  &:hover   {
+    color: #7FDBFF;
+  }
+
+  &:active  {
+    transition: color .3s;
+    color: #007BE6;
+  }
+
+}
+
+em {
+  font-size: 0.8rem;
 }

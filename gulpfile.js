@@ -56,7 +56,7 @@ gulp.task('copy-rxjs', function() {
  * Copy html files to build directory
  */
 gulp.task('copy-html', function() {
-  return gulp.src(['./**/*.html', '!node_modules/**/*']).pipe(gulp.dest('build'));
+  return gulp.src(['./**/*.html', '!build/**/*.html', '!node_modules/**/*']).pipe(gulp.dest('build'));
 });
 
 /**
@@ -72,6 +72,30 @@ gulp.task('copy-api', function() {
  */
 gulp.task('copy-config', function() {
   return gulp.src('config/systemjs.config.js').pipe(gulp.dest('build/config'));
+});
+
+/**
+ * Copy app icons
+ */
+gulp.task('copy-app-icons', function() {
+  return gulp.src(['app-icons/**/*', '!build/app-icons/**/*'], {dot:true})
+    .pipe(gulp.dest('build/app-icons'));
+});
+
+/**
+ * Copy favicon
+ */
+gulp.task('copy-favicon', function() {
+  return gulp.src(['favicon.ico', '!build/favicon.icon'], {dot:true})
+    .pipe(gulp.dest('build'));
+});
+
+/**
+ * Copy web config files
+ */
+gulp.task('copy-webconfig-files', function() {
+  return gulp.src(['browserconfig.xml', 'manifest.json'], {dot:true})
+    .pipe(gulp.dest('build'));
 });
 
 /**
@@ -109,7 +133,7 @@ gulp.task('compile-typescript', function() {
  */
 gulp.task('sass', function () {
   return gulp
-    .src(['./**/*.scss', '!node_modules/**/*'])
+    .src(['./**/*.scss', '!build/**/*.scss', '!node_modules/**/*'])
     .pipe(sourcemaps.init())
     .pipe(sass())
     .pipe(sourcemaps.write("maps"))
@@ -134,13 +158,14 @@ gulp.task('uglify', function (cb) {
  */
 gulp.task('dev', ['build'], function() {
   gulp.watch(['./**/*.scss'], ['sass']);
-  gulp.watch(['./**/*.ts', './**/*.html'], ['compile-typescript']);
+  gulp.watch(['./**/*.ts'], ['compile-typescript']);
+  gulp.watch(['./**/*.html', '!build/**/*.html'], ['copy-html']);
 });
 
 /**
  * Deploy tasks
  */
-gulp.task('copy', ['copy-scripts', 'copy-html', 'copy-config', 'copy-rxjs', 'copy-api']);
+gulp.task('copy', ['copy-scripts', 'copy-html', 'copy-config', 'copy-rxjs', 'copy-api', 'copy-app-icons', 'copy-favicon', 'copy-webconfig-files']);
 gulp.task('build', ['compile-typescript', 'copy', 'sass']);
 gulp.task('release', ['copy-build']);
 gulp.task('compress', ['uglify'], function() {

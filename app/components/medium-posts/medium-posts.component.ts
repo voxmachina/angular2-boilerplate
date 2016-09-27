@@ -9,7 +9,7 @@ import { MediumService } from "../../services/medium.service";
 })
 
 export class MediumPostsComponent implements OnInit {
-  title = "Posts";
+  title = "Latest posts from Medium";
   posts: MediumPost[];
 
   constructor(private mediumService: MediumService) { }
