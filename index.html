@@ -26,11 +26,15 @@
   	<meta name="theme-color" content="#333333">
 
     <link rel="stylesheet" href="/app/main.css">
+
+    <!-- build:js -->
     <script src="/lib/shim.min.js"></script>
     <script src="/lib/zone.js"></script>
     <script src="/lib/Reflect.js"></script>
     <script src="/lib/system.src.js"></script>
     <script src="/config/systemjs.config.js"></script>
+    <!-- endbuild -->
+    
     <script>
       System.import('app').catch(function(err) {
         if (console) console.error(err);

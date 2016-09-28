@@ -1,5 +1,9 @@
 <?php
 
+if (strpos($_SERVER["HTTP_HOST"], "localhost") !== false) {
+  header('Access-Control-Allow-Origin: *');
+}
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application

@@ -3,11 +3,12 @@ import { Http, Response } from "@angular/http";
 import { MediumPost } from "../models/medium-post";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/toPromise";
+import { Config } from "../config";
 
 @Injectable()
 export class MediumService {
 
-  private postsUrl = "http://localhost:8080/services/content/public/medium";
+  private postsUrl = Config.getEnvironmentVariable("mediumEndpoint");
   private postUrlPrefix = "https://medium.com/dinomad/";
   private imageUrlPrefix = "https://cdn-images-1.medium.com/max/720/";
 
