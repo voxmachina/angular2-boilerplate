@@ -1,6 +1,4 @@
 import { Component } from "@angular/core";
-import { MediumPost } from "../../models/medium-post";
-import { MediumService } from "../../services/medium.service";
 
 @Component({
   selector: "dashboard",
