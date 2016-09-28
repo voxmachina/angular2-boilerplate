@@ -13,7 +13,6 @@ export class InstagramService {
   constructor (private http: Http) {}
 
   getPosts(): Promise<InstagramPost[]> {
-    console.log(this.postsUrl);
     return this.http.get(this.postsUrl).toPromise()
                     .then(this.extractData.bind(this))
                     .catch(this.handleError);

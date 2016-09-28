@@ -4,11 +4,15 @@ const gulp = require('gulp');
 const rollup = require('rollup').rollup;
 const commonjs = require('rollup-plugin-commonjs');
 const nodeResolve = require('rollup-plugin-node-resolve');
+const inlineNg2Template = require('gulp-inline-ng2-template');
 const ts = require('gulp-typescript');
 const del = require('del');
 const sourcemaps = require('gulp-sourcemaps');
 const browserify = require('browserify');
 const uglify = require('gulp-uglify');
+const htmlMin = require('gulp-html-minifier');
+const cleanCSS = require('gulp-clean-css');
+const babel = require('gulp-babel');
 const concat = require('gulp-concat');
 const htmlReplace = require('gulp-html-replace');
 const sass = require('gulp-sass');
@@ -178,7 +182,8 @@ gulp.task('uglify-helpers', ['concat-helpers'], function(cb) {
  */
 gulp.task('uglify', ['uglify-helpers'], function (cb) {
   pump([
-        gulp.src(['release/**/*.js', '!release/lib/**/*']),
+        gulp.src(['release/**/*.js', '!release/lib/**/*', '!release/api/**/*']),
+        babel({presets: ['es2015']}),
         uglify(),
         gulp.dest('release/')
     ],
@@ -208,6 +213,47 @@ gulp.task('clean-index', function() {
         'js': 'lib/helpers.min.js'
     }))
     .pipe(gulp.dest('release/'));
+});
+
+/**
+ * Cleans CSS
+ */
+gulp.task('minify-css', function() {
+  return gulp.src(['./release/**/*.css', '!release/lib/**/*', '!release/api/**/*'])
+    .pipe(cleanCSS({compatibility: 'ie8'}))
+    .pipe(gulp.dest('./release'))
+});
+
+/**
+ * Cleans HTML
+ */
+gulp.task('minify-html', function() {
+  return gulp.src([
+      './release/**/*.html',
+      '!release/lib/**/*',
+      '!release/api/**/*',
+      '!release/index.html'
+    ])
+    .pipe(htmlMin({
+      collapseWhitespace: true,
+      removeComments: true,
+      caseSensitive: true
+    }))
+    .pipe(gulp.dest('./release'))
+});
+
+/**
+ * Cleans HTML and CSS
+ */
+gulp.task('minify-html-css', ['minify-html', 'minify-css']);
+
+/**
+ * Inline HTML and CSS
+ */
+gulp.task('inline', function () {
+  return gulp.src(['release/**/*.js', '!release/lib/**/*', '!release/api/**/*'])
+        .pipe(inlineNg2Template({ base: 'release' }))
+        .pipe(gulp.dest('./release'));
 });
 
 /**
@@ -266,11 +312,11 @@ gulp.task('symlink', ['compress'], function() {
 });
 
 gulp.task('stage', function(done) {
-  runSequence('build', 'release', 'bundle', 'uglify', 'clean-helpers');
+  runSequence('build', 'release', 'minify-html-css', 'inline', 'bundle', 'uglify', 'clean-helpers');
   done();
 });
 
 gulp.task('deploy', function(done) {
-  runSequence('build', 'release', 'bundle', 'uglify', 'clean-helpers', 'symlink', 'clean');
+  runSequence('build', 'release', 'minify-html-css', 'inline', 'bundle', 'uglify', 'clean-helpers', 'symlink', 'clean');
   done();
 });
