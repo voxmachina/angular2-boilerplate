@@ -12,6 +12,41 @@
 */
 
 /**
+* Returns the latest instagram feed in json format
+* Uses 2 hours file cache mechanism
+ */
+$app->get('instagram', function() use ($app) {
+
+  $cacheFile = "../storage/instagram.json";
+  $exists = file_exists($cacheFile);
+
+  if( !$exists || ( $exists && time() > strtotime('+2 hours', filemtime($cacheFile)))) {
+    $url = "https://api.instagram.com/v1/users/".$_ENV['INSTAGRAM_USER_ID']."/media/recent/?access_token=".$_ENV['INSTAGRAM_ACCESS_TOKEN'] . "&count=5";
+
+    $curl = curl_init();
+    curl_setopt_array(
+      $curl,
+      [
+        CURLOPT_URL            => $url,
+        CURLOPT_USERAGENT      => 'spider',
+        CURLOPT_TIMEOUT        => 120,
+        CURLOPT_CONNECTTIMEOUT => 30,
+        CURLOPT_RETURNTRANSFER => TRUE,
+        CURLOPT_ENCODING       => 'UTF-8'
+      ]
+    );
+    $data = curl_exec($curl);
+    curl_close($curl);
+
+    file_put_contents($cacheFile, $data);
+  } else {
+    $data = file_get_contents($cacheFile);
+  }
+
+  return response()->json(json_decode($data));
+});
+
+/**
 * Returns the latest medium feed in json format
 * Uses 2 hours file cache mechanism
 */

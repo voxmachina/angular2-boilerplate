@@ -4,8 +4,10 @@ import { HttpModule } from "@angular/http";
 
 import { AppComponent } from "./app.component";
 import { MediumPostsComponent } from "../medium-posts/medium-posts.component";
+import { InstagramPostsComponent } from "../instagram-posts/instagram-posts.component";
 
 import { MediumService } from "../../services/medium.service";
+import { InstagramService } from "../../services/instagram.service";
 
 @NgModule({
   imports: [
@@ -14,10 +16,14 @@ import { MediumService } from "../../services/medium.service";
   ],
   declarations: [
     AppComponent,
-    MediumPostsComponent
+    MediumPostsComponent,
+    InstagramPostsComponent
   ],
   bootstrap: [AppComponent],
-  providers: [MediumService]
+  providers: [
+    MediumService,
+    InstagramService
+  ]
 })
 
 export class AppModule { }
