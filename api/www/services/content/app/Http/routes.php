@@ -12,6 +12,41 @@
 */
 
 /**
+ * Returns the latest github feed in json format
+ * Uses 2 hours file cache mechanism
+ */
+$app->get('github', function() use ($app) {
+
+  $cacheFile = "../storage/github.json";
+  $exists = file_exists($cacheFile);
+
+  if( !$exists || ( $exists && time() > strtotime('+2 hours', filemtime($cacheFile)))) {
+    $url = "https://api.github.com/users/voxmachina/repos?sort=updated&per_page=5";
+
+    $curl = curl_init();
+    curl_setopt_array(
+      $curl,
+      [
+        CURLOPT_URL            => $url,
+        CURLOPT_USERAGENT      => 'spider',
+        CURLOPT_TIMEOUT        => 120,
+        CURLOPT_CONNECTTIMEOUT => 30,
+        CURLOPT_RETURNTRANSFER => TRUE,
+        CURLOPT_ENCODING       => 'UTF-8'
+      ]
+    );
+    $data = curl_exec($curl);
+    curl_close($curl);
+
+    file_put_contents($cacheFile, $data);
+  } else {
+    $data = file_get_contents($cacheFile);
+  }
+
+  return response()->json(json_decode($data));
+});
+
+/**
 * Returns the latest instagram feed in json format
 * Uses 2 hours file cache mechanism
  */
