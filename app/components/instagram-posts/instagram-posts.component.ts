@@ -1,4 +1,4 @@
-import { Component, AfterViewChecked } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { InstagramPost } from "../../models/instagram-post";
 import { InstagramService } from "../../services/instagram.service";
 
@@ -8,7 +8,7 @@ import { InstagramService } from "../../services/instagram.service";
     styleUrls: ["app/components/instagram-posts/instagram-posts.component.css"]
 })
 
-export class InstagramPostsComponent implements AfterViewChecked {
+export class InstagramPostsComponent implements OnInit {
     title = "Latest posts from Instagram";
     posts: InstagramPost[];
 
@@ -18,7 +18,7 @@ export class InstagramPostsComponent implements AfterViewChecked {
         this.instagramService.getPosts().then(posts => this.posts = posts);
     }
 
-    ngAfterViewChecked(): void {
+    ngOnInit(): void {
         this.getPosts();
     }
 }

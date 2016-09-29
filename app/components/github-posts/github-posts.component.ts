@@ -1,4 +1,4 @@
-import { Component, AfterViewChecked } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { GithubPost } from "../../models/github-post";
 import { GithubService } from "../../services/github.service";
 
@@ -8,7 +8,7 @@ import { GithubService } from "../../services/github.service";
     styleUrls: ["app/components/github-posts/github-posts.component.css"]
 })
 
-export class GithubPostsComponent implements AfterViewChecked {
+export class GithubPostsComponent implements OnInit {
     title = "Latest updates from Github";
     posts: GithubPost[];
 
@@ -18,7 +18,7 @@ export class GithubPostsComponent implements AfterViewChecked {
         this.instagramService.getPosts().then(posts => this.posts = posts);
     }
 
-    ngAfterViewChecked(): void {
+    ngOnInit(): void {
         this.getPosts();
     }
 }
