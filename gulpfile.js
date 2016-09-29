@@ -28,99 +28,110 @@ const config = require('./config/gulp.json');
 let currentDateTimeStamp = new Date().getTime();
 
 let gulpSSH = new GulpSSH({
-  ignoreErrors: false,
-  sshConfig: config.ssh
+    ignoreErrors: false,
+    sshConfig: config.ssh
 });
 
 /**
  * Copy scripts to build/lib directory
  */
 gulp.task('copy-scripts', function() {
-  let scripts = [
-    'node_modules/core-js/client/shim.min.js',
-    'node_modules/zone.js/dist/zone.js',
-    'node_modules/reflect-metadata/Reflect.js',
-    'node_modules/systemjs/dist/system.src.js',
-    'node_modules/@angular/core/bundles/core.umd.js',
-    'node_modules/@angular/common/bundles/common.umd.js',
-    'node_modules/@angular/compiler/bundles/compiler.umd.js',
-    'node_modules/@angular/platform-browser/bundles/platform-browser.umd.js',
-    'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
-    'node_modules/@angular/http/bundles/http.umd.js',
-    'node_modules/@angular/router/bundles/router.umd.js',
-    'node_modules/@angular/forms/bundles/forms.umd.js'
-  ];
+    let scripts = [
+        'node_modules/core-js/client/shim.min.js',
+        'node_modules/zone.js/dist/zone.js',
+        'node_modules/reflect-metadata/Reflect.js',
+        'node_modules/systemjs/dist/system.src.js',
+        'node_modules/@angular/core/bundles/core.umd.js',
+        'node_modules/@angular/common/bundles/common.umd.js',
+        'node_modules/@angular/compiler/bundles/compiler.umd.js',
+        'node_modules/@angular/platform-browser/bundles/platform-browser.umd.js',
+        'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
+        'node_modules/@angular/http/bundles/http.umd.js',
+        'node_modules/@angular/router/bundles/router.umd.js',
+        'node_modules/@angular/forms/bundles/forms.umd.js'
+    ];
 
-  return gulp.src(scripts).pipe(gulp.dest('build/lib'));
+    return gulp.src(scripts).pipe(gulp.dest('build/lib'));
 });
 
 /**
  * Copy RXJS lib to build folder
  */
 gulp.task('copy-rxjs', function() {
-  return gulp.src('node_modules/rxjs/**/*').pipe(gulp.dest('build/lib/rxjs'));
+    return gulp.src('node_modules/rxjs/**/*').pipe(gulp.dest('build/lib/rxjs'));
 });
 
 /**
  * Copy html files to build directory
  */
 gulp.task('copy-html', function() {
-  return gulp.src(['./**/*.html', '!build/**/*.html', '!node_modules/**/*']).pipe(gulp.dest('build'));
+    return gulp.src(['./**/*.html', '!build/**/*.html', '!node_modules/**/*'])
+        .pipe(gulp.dest('build'));
 });
 
 /**
  * Copy API files to build directory
  */
 gulp.task('copy-api', function() {
-  return gulp.src(['api/**/*', '!api/Dockerfile', '!api/start', '!api/apache-config.conf'], {dot:true})
-    .pipe(gulp.dest('build/api'));
+    return gulp.src(['api/**/*', '!api/Dockerfile', '!api/start', '!api/apache-config.conf'], {
+            dot: true
+        })
+        .pipe(gulp.dest('build/api'));
 });
 
 /**
  * Copy configurations
  */
 gulp.task('copy-config', function() {
-  return gulp.src('config/systemjs.config.js').pipe(gulp.dest('build/config'));
+    return gulp.src('config/systemjs.config.js').pipe(gulp.dest('build/config'));
 });
 
 /**
  * Copy app icons
  */
 gulp.task('copy-app-icons', function() {
-  return gulp.src(['app-icons/**/*', '!build/app-icons/**/*'], {dot:true})
-    .pipe(gulp.dest('build/app-icons'));
+    return gulp.src(['app-icons/**/*', '!build/app-icons/**/*'], {
+            dot: true
+        })
+        .pipe(gulp.dest('build/app-icons'));
 });
 
 /**
  * Copy favicon
  */
 gulp.task('copy-favicon', function() {
-  return gulp.src(['favicon.ico', '!build/favicon.icon'], {dot:true})
-    .pipe(gulp.dest('build'));
+    return gulp.src(['favicon.ico', '!build/favicon.icon'], {
+            dot: true
+        })
+        .pipe(gulp.dest('build'));
 });
 
 /**
  * Copy web config files
  */
 gulp.task('copy-webconfig-files', function() {
-  return gulp.src(['browserconfig.xml', 'manifest.json'], {dot:true})
-    .pipe(gulp.dest('build'));
+    return gulp.src(['browserconfig.xml', 'manifest.json'], {
+            dot: true
+        })
+        .pipe(gulp.dest('build'));
 });
 
 /**
  * Copies a build to a relase
  */
 gulp.task('copy-build', function() {
-  return gulp.src(['build/**/*'], {dot:true}).pipe(gulp.dest('release/'));
+    return gulp.src(['build/**/*'], {
+        dot: true
+    }).pipe(gulp.dest('release/'));
 });
 
 /**
  * Cleans build folder
  */
-gulp.task('clean', function (cb) {
-  del('dist', cb);
-  del('build', cb);
-  del('release', cb);
+gulp.task('clean', function(cb) {
+    del('dist', cb);
+    del('build', cb);
+    del('release', cb);
 });
 
 /**
@@ -128,118 +139,127 @@ gulp.task('clean', function (cb) {
  * Also adds sourcemaps
  */
 gulp.task('compile-typescript', function() {
-  let tsResult = tsProject.src()
+    let tsResult = tsProject.src()
         .pipe(sourcemaps.init())
         .pipe(ts(tsProject));
 
-  return tsResult.js
-    .pipe(sourcemaps.write("maps"))
-    .pipe(gulp.dest("build"));
+    return tsResult.js
+        .pipe(sourcemaps.write("maps"))
+        .pipe(gulp.dest("build"));
 });
 
 /**
  * Compile sass files into css into the build folder
  */
-gulp.task('sass', function () {
-  return gulp
-    .src(['./**/*.scss', '!build/**/*.scss', '!node_modules/**/*'])
-    .pipe(sourcemaps.init())
-    .pipe(sass())
-    .pipe(sourcemaps.write("maps"))
-    .pipe(gulp.dest('build'));
+gulp.task('sass', function() {
+    return gulp
+        .src(['./**/*.scss', '!build/**/*.scss', '!node_modules/**/*'])
+        .pipe(sourcemaps.init())
+        .pipe(sass())
+        .pipe(sourcemaps.write("maps"))
+        .pipe(gulp.dest('build'));
 });
 
 /**
  * Concats helper js files
  */
 gulp.task('concat-helpers', function() {
-  return gulp.src([
-    'release/lib/shim.min.js',
-    'release/lib/zone.js',
-    'release/lib/Reflect.js',
-    'release/lib/system.src.js',
-    'release/config/systemjs.config.js'
-  ])
-  .pipe(concat({ path: 'helpers.min.js', stat: { mode: '0666' }}))
-  .pipe(gulp.dest('release/lib'));
+    return gulp.src([
+            'release/lib/shim.min.js',
+            'release/lib/zone.js',
+            'release/lib/Reflect.js',
+            'release/lib/system.src.js',
+            'release/config/systemjs.config.js'
+        ])
+        .pipe(concat({
+            path: 'helpers.min.js',
+            stat: {
+                mode: '0666'
+            }
+        }))
+        .pipe(gulp.dest('release/lib'));
 });
 
 /**
  * Uglify helper js file
  */
 gulp.task('uglify-helpers', ['concat-helpers'], function(cb) {
-  pump([
-        gulp.src(['release/lib/helpers.min.js']),
-        uglify(),
-        gulp.dest('release/lib')
-    ],
-    cb
-  );
+    pump([
+            gulp.src(['release/lib/helpers.min.js']),
+            uglify(),
+            gulp.dest('release/lib')
+        ],
+        cb
+    );
 });
 
 /**
  * Compress js files for release
  */
-gulp.task('uglify', ['uglify-helpers'], function (cb) {
-  pump([
-        gulp.src(['release/**/*.js', '!release/lib/**/*', '!release/api/**/*']),
-        babel({presets: ['es2015']}),
-        uglify(),
-        gulp.dest('release/')
-    ],
-    cb
-  );
+gulp.task('uglify', ['uglify-helpers'], function(cb) {
+    pump([
+            gulp.src(['release/**/*.js', '!release/lib/**/*', '!release/api/**/*']),
+            babel({
+                presets: ['es2015']
+            }),
+            uglify(),
+            gulp.dest('release/')
+        ],
+        cb
+    );
 });
 
 /**
  * Cleans helper files for release
  */
 gulp.task('clean-helpers', ['clean-index'], function() {
-  return del([
-    'release/lib/shim.min.js',
-    'release/lib/zone.js',
-    'release/lib/Reflect.js',
-    'release/lib/system.src.js',
-    'release/config/systemjs.config.js'
-  ]);
+    return del([
+        'release/lib/shim.min.js',
+        'release/lib/zone.js',
+        'release/lib/Reflect.js',
+        'release/lib/system.src.js',
+        'release/config/systemjs.config.js'
+    ]);
 });
 
 /**
  * Refactors index.html
  */
 gulp.task('clean-index', function() {
-  gulp.src('release/index.html')
-    .pipe(htmlReplace({
-        'js': 'lib/helpers.min.js'
-    }))
-    .pipe(gulp.dest('release/'));
+    gulp.src('release/index.html')
+        .pipe(htmlReplace({
+            'js': 'lib/helpers.min.js'
+        }))
+        .pipe(gulp.dest('release/'));
 });
 
 /**
  * Cleans CSS
  */
 gulp.task('minify-css', function() {
-  return gulp.src(['./release/**/*.css', '!release/lib/**/*', '!release/api/**/*'])
-    .pipe(cleanCSS({compatibility: 'ie8'}))
-    .pipe(gulp.dest('./release'))
+    return gulp.src(['./release/**/*.css', '!release/lib/**/*', '!release/api/**/*'])
+        .pipe(cleanCSS({
+            compatibility: 'ie8'
+        }))
+        .pipe(gulp.dest('./release'))
 });
 
 /**
  * Cleans HTML
  */
 gulp.task('minify-html', function() {
-  return gulp.src([
-      './release/**/*.html',
-      '!release/lib/**/*',
-      '!release/api/**/*',
-      '!release/index.html'
-    ])
-    .pipe(htmlMin({
-      collapseWhitespace: true,
-      removeComments: true,
-      caseSensitive: true
-    }))
-    .pipe(gulp.dest('./release'))
+    return gulp.src([
+            './release/**/*.html',
+            '!release/lib/**/*',
+            '!release/api/**/*',
+            '!release/index.html'
+        ])
+        .pipe(htmlMin({
+            collapseWhitespace: true,
+            removeComments: true,
+            caseSensitive: true
+        }))
+        .pipe(gulp.dest('./release'))
 });
 
 /**
@@ -250,38 +270,42 @@ gulp.task('minify-html-css', ['minify-html', 'minify-css']);
 /**
  * Inline HTML and CSS
  */
-gulp.task('inline', function () {
-  return gulp.src(['release/**/*.js', '!release/lib/**/*', '!release/api/**/*'])
-        .pipe(inlineNg2Template({ base: 'release' }))
+gulp.task('inline', function() {
+    return gulp.src(['release/**/*.js', '!release/lib/**/*', '!release/api/**/*'])
+        .pipe(inlineNg2Template({
+            base: 'release'
+        }))
         .pipe(gulp.dest('./release'));
 });
 
 /**
  * Creates a bundle for the app
  */
-gulp.task('bundle', function () {
-  return rollup({
-    entry: 'release/app/main.js',
-    plugins: [
-      nodeResolve({ jsnext: true }),
-      commonjs()
-    ]
-  }).then(function (bundle) {
-    return bundle.write({
-      format: 'iife',
-      moduleName: 'IGenius',
-      dest: 'release/app/main.js'
+gulp.task('bundle', function() {
+    return rollup({
+        entry: 'release/app/main.js',
+        plugins: [
+            nodeResolve({
+                jsnext: true
+            }),
+            commonjs()
+        ]
+    }).then(function(bundle) {
+        return bundle.write({
+            format: 'iife',
+            moduleName: 'IGenius',
+            dest: 'release/app/main.js'
+        });
     });
-  });
 });
 
 /**
  * Watcher
  */
 gulp.task('dev', ['build'], function() {
-  gulp.watch(['./**/*.scss'], ['sass']);
-  gulp.watch(['./**/*.ts'], ['compile-typescript']);
-  gulp.watch(['./**/*.html', '!build/**/*.html'], ['copy-html']);
+    gulp.watch(['./**/*.scss'], ['sass']);
+    gulp.watch(['./**/*.ts'], ['compile-typescript']);
+    gulp.watch(['./**/*.html', '!build/**/*.html'], ['copy-html']);
 });
 
 /**
@@ -291,59 +315,61 @@ gulp.task('copy', ['copy-scripts', 'copy-html', 'copy-config', 'copy-rxjs', 'cop
 gulp.task('build', ['compile-typescript', 'copy', 'sass']);
 gulp.task('release', ['copy-build']);
 gulp.task('compress', function() {
-    return gulp.src(['release/**/*'], {dot:true})
-        .pipe(tar('release-'+currentDateTimeStamp+'.tar'))
+    return gulp.src(['release/**/*'], {
+            dot: true
+        })
+        .pipe(tar('release-' + currentDateTimeStamp + '.tar'))
         .pipe(gzip())
         .pipe(gulp.dest('dist'))
-        .pipe(gulpSSH.sftp('write', '/home/dh_voxmachina/igenius_releases/release-'+currentDateTimeStamp+'.tar.gz'));
+        .pipe(gulpSSH.sftp('write', '/home/dh_voxmachina/igenius_releases/release-' + currentDateTimeStamp + '.tar.gz'));
 });
 
 gulp.task('symlink', ['compress'], function() {
-  let rootDir = '/home/dh_voxmachina/igenius_releases/';
+    let rootDir = '/home/dh_voxmachina/igenius_releases/';
 
-  return gulpSSH
-    .exec([
-      'mkdir '+rootDir+currentDateTimeStamp,
-      'tar -xvf '+rootDir+'release-' + currentDateTimeStamp + '.tar.gz -C '+rootDir+currentDateTimeStamp,
-      'rm -rf '+rootDir+'release-' + currentDateTimeStamp + '.tar.gz',
-      'rm -rf '+rootDir+'current',
-      'ln -s '+rootDir+currentDateTimeStamp+' '+rootDir+'current'
-    ]);
+    return gulpSSH
+        .exec([
+            'mkdir ' + rootDir + currentDateTimeStamp,
+            'tar -xvf ' + rootDir + 'release-' + currentDateTimeStamp + '.tar.gz -C ' + rootDir + currentDateTimeStamp,
+            'rm -rf ' + rootDir + 'release-' + currentDateTimeStamp + '.tar.gz',
+            'rm -rf ' + rootDir + 'current',
+            'ln -s ' + rootDir + currentDateTimeStamp + ' ' + rootDir + 'current'
+        ]);
 });
 
 /**
  * Cleans release files
  */
 gulp.task('clean-release', function(cb) {
-  return del([
-    'release/app/components',
-    'release/app/models',
-    'release/app/services',
-    'release/app/config.js',
-    'release/config',
-    'release/lib/shim.min.js',
-    'release/lib/zone.js',
-    'release/lib/Reflect.js',
-    'release/lib/system.src.js',
-    'release/lib/core.umd.js',
-    'release/lib/common.umd.js',
-    'release/lib/compiler.umd.js',
-    'release/lib/platform-browser.umd.js',
-    'release/lib/platform-browser-dynamic.umd.js',
-    'release/lib/http.umd.js',
-    'release/lib/router.umd.js',
-    'release/lib/forms.umd.js',
-    'release/lib/rxjs'
-  ],
-  cb);
+    return del([
+            'release/app/components',
+            'release/app/models',
+            'release/app/services',
+            'release/app/config.js',
+            'release/config',
+            'release/lib/shim.min.js',
+            'release/lib/zone.js',
+            'release/lib/Reflect.js',
+            'release/lib/system.src.js',
+            'release/lib/core.umd.js',
+            'release/lib/common.umd.js',
+            'release/lib/compiler.umd.js',
+            'release/lib/platform-browser.umd.js',
+            'release/lib/platform-browser-dynamic.umd.js',
+            'release/lib/http.umd.js',
+            'release/lib/router.umd.js',
+            'release/lib/forms.umd.js',
+            'release/lib/rxjs'
+        ],
+        cb);
 });
 
 gulp.task('stage', function(done) {
-  runSequence('build', 'release', 'minify-html-css', 'inline', 'bundle', 'uglify', 'clean-helpers', 'clean-release');
-  done();
+    runSequence('build', 'release', 'minify-html-css', 'inline', 'bundle', 'uglify', 'clean-helpers', 'clean-release');
+    done();
 });
 
 gulp.task('deploy', function(done) {
-  runSequence('build', 'release', 'minify-html-css', 'inline', 'bundle', 'uglify', 'clean-helpers', 'clean-release', 'symlink', 'clean');
-  done();
+    runSequence('build', 'release', 'minify-html-css', 'inline', 'bundle', 'uglify', 'clean-helpers', 'clean-release', 'symlink', 'clean');
+    done();
 });

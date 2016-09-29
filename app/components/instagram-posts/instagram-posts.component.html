@@ -1,11 +1,11 @@
 <div class="posts">
-  <h4>{{title}}</h4>
-  <li *ngFor="let post of posts">
-    <div class="thumbnail" *ngIf="post.thumbnail != ''">
-      <a href="{{post.url}}"><img src="{{post.thumbnail}}" /></a>
-    </div>
-    <a href="{{post.url}}">{{post.title}}</a>
-    <em>{{post.subTitle}}</em>
-    <span>{{post.createdAt}}</span>
-  </li>
+    <h4>{{title}}</h4>
+    <li *ngFor="let post of posts">
+        <div class="thumbnail" *ngIf="post.thumbnail != ''">
+            <a href="{{post.url}}"><img src="{{post.thumbnail}}"/></a>
+        </div>
+        <a href="{{post.url}}">{{post.title}}</a>
+        <em>{{post.subTitle}}</em>
+        <span>{{post.createdAt}}</span>
+    </li>
 </div>

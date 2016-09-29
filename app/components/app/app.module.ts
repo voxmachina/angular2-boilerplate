@@ -10,20 +10,20 @@ import { MediumService } from "../../services/medium.service";
 import { InstagramService } from "../../services/instagram.service";
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    HttpModule
-  ],
-  declarations: [
-    AppComponent,
-    MediumPostsComponent,
-    InstagramPostsComponent
-  ],
-  bootstrap: [AppComponent],
-  providers: [
-    MediumService,
-    InstagramService
-  ]
+    imports: [
+        BrowserModule,
+        HttpModule
+    ],
+    declarations: [
+        AppComponent,
+        MediumPostsComponent,
+        InstagramPostsComponent
+    ],
+    bootstrap: [AppComponent],
+    providers: [
+        MediumService,
+        InstagramService
+    ]
 })
 
 export class AppModule { }

@@ -7,7 +7,7 @@ import { AppModule } from "./components/app/app.module";
 const platform = platformBrowserDynamic();
 
 if (!Config.getEnvironmentVariable("devMode")) {
-  enableProdMode();
+    enableProdMode();
 }
 
 platform.bootstrapModule(AppModule);
