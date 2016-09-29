@@ -1,14 +1,16 @@
 @import "../node_modules/bootstrap/scss/normalize";
-$enable-flex: true;
+
 @import "https://fonts.googleapis.com/css?family=Open+Sans";
 
 body {
     font-family: 'Open Sans', sans-serif;
-    padding: 20px;
+    padding: 50px 10px 10px 10px;;
+    margin: 0;
+    height: 100%;
 }
 
 a {
-    transition: color 0.4s;
+    transition: color 0.4s ease;
     color: #265C83;
 
     &:link,

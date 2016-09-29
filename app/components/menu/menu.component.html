@@ -1,0 +1,17 @@
+<nav>
+    <div id="toggle" [class.active]="isActive">
+        <div class="header">
+            <div class="burguer" (click)="isActive=!isActive">
+                <span class="burguer-row-1"></span>
+                <span class="burguer-row-2"></span>
+                <span class="burguer-row-3"></span>
+            </div>
+            <div class="headline">igeni.us</div>
+        </div>
+        <ul id="menu">
+            <li><a href="/">home</a></li>
+            <li><a href="/about">about</a></li>
+            <li><a href="/contact">contact</a></li>
+        </ul>
+    </div>
+</nav>

@@ -6,6 +6,4 @@ import { Component } from "@angular/core";
     styleUrls: ["app/components/app/app.component.css"]
 })
 
-export class AppComponent {
-    title = "iGenius";
-}
+export class AppComponent { }
