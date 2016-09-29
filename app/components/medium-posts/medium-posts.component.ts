@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, AfterViewChecked } from "@angular/core";
 import { MediumPost } from "../../models/medium-post";
 import { MediumService } from "../../services/medium.service";
 
@@ -8,7 +8,7 @@ import { MediumService } from "../../services/medium.service";
     styleUrls: ["app/components/medium-posts/medium-posts.component.css"]
 })
 
-export class MediumPostsComponent implements OnInit {
+export class MediumPostsComponent implements AfterViewChecked {
     title = "Latest posts from Medium";
     posts: MediumPost[];
 
@@ -18,7 +18,7 @@ export class MediumPostsComponent implements OnInit {
         this.mediumService.getPosts().then(posts => this.posts = posts);
     }
 
-    ngOnInit(): void {
+    ngAfterViewChecked(): void {
         this.getPosts();
     }
 }

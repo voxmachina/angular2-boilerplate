@@ -9,6 +9,7 @@ import { GithubPostsComponent } from "../github-posts/github-posts.component";
 import { MenuComponent } from "../menu/menu.component";
 import { AboutComponent } from "../about/about.component";
 import { HomeComponent } from "../home/home.component";
+import { ContactComponent } from "../contact/contact.component";
 
 import { MediumService } from "../../services/medium.service";
 import { InstagramService } from "../../services/instagram.service";
@@ -29,7 +30,8 @@ import { routing }  from "./app.routing";
         GithubPostsComponent,
         MenuComponent,
         AboutComponent,
-        HomeComponent
+        HomeComponent,
+        ContactComponent
     ],
     bootstrap: [AppComponent],
     providers: [

@@ -1,0 +1,97 @@
+@import "../../../node_modules/sass-flex-mixin/flex";
+
+#toggle {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    user-select: none;
+    height: 100%;
+    width: 100%;
+
+    a {
+        text-decoration: none;
+    }
+
+    .header {
+        @include flexbox();
+        @include flex-direction(row);
+        background: #333;
+        padding: 8px 5px 5px 5px;
+        color: #fff;
+
+        .headline {
+            @include flex-grow(1);
+            text-align: center;
+        }
+    }
+
+    .burguer {
+        cursor: pointer;
+    }
+
+    span {
+        display: block;
+        width: 33px;
+        height: 4px;
+        margin-bottom: 5px;
+        position: relative;
+        background: #ffffff;
+        border-radius: 3px;
+        z-index: 1;
+        transition:
+            transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0),
+            background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0),
+            opacity 0.55s ease;
+
+        &.burguer-row-1 {
+            transform-origin: 0 0;
+        }
+
+        &.burguer-row-3 {
+            transform-origin: 0 100%;
+        }
+    }
+
+    #menu {
+        height: 100%;
+        width: 75%;
+        margin: -100px 0 0 -50px;
+        padding: 110px 50px 50px 60px;
+        background: #ededed;
+        list-style-type: none;
+        -webkit-font-smoothing: antialiased;
+        transform-origin: 0 0;
+        transform: translate(-100%, 0);
+        transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+
+        li {
+            padding: 5px 0;
+            font-size: 22px;
+        }
+    }
+
+    &.active {
+        #menu {
+            transform: scale(1.0, 1.0);
+            opacity: 1;
+        }
+
+        span {
+            opacity: 1;
+            transform: rotate(45deg) translate(8px, -11px);
+            background: #232323;
+        }
+
+        .burguer-row-2 {
+            opacity: 0;
+            transform: rotate(0deg) scale(0.2, 0.2);
+        }
+
+        .burguer-row-3 {
+            opacity: 1;
+            transform: rotate(-45deg) translate(8px, 11px);
+        }
+    }
+}
