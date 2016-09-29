@@ -24,9 +24,13 @@
   	<meta name="msapplication-TileColor" content="#333333">
   	<meta name="msapplication-TileImage" content="app-icons/ms-icon-144x144.png">
   	<meta name="theme-color" content="#333333">
-
-    <link rel="stylesheet" href="/app/main.css">
-
+  </head>
+  <body>
+    <!--[if lte IE 10]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    	your browser</a> to improve your experience and security.</p>
+    <![endif]-->
+    <dashboard>Loading...</dashboard>
     <!-- build:js -->
     <script src="/lib/shim.min.js"></script>
     <script src="/lib/zone.js"></script>
@@ -40,13 +44,7 @@
         if (console) console.error(err);
       });
     </script>
-  </head>
-  <body>
-    <!--[if lte IE 10]>
-    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
-    	your browser</a> to improve your experience and security.</p>
-    <![endif]-->
-    <dashboard>Loading...</dashboard>
+
     <script>
     	window.ga = function () {
     		ga.q.push(arguments)
@@ -56,6 +54,24 @@
     	ga('create', 'UA-51956545-1', 'auto');
     	ga('send', 'pageview')
     </script>
+
+    <noscript id="deferred-styles">
+      <link rel="stylesheet" type="text/css" href="app/main.css"/>
+    </noscript>
+    <script>
+      var loadDeferredStyles = function() {
+        var addStylesNode = document.getElementById("deferred-styles");
+        var replacement = document.createElement("div");
+        replacement.innerHTML = addStylesNode.textContent;
+        document.body.appendChild(replacement)
+        addStylesNode.parentElement.removeChild(addStylesNode);
+      };
+      var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+          webkitRequestAnimationFrame || msRequestAnimationFrame;
+      if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+      else window.addEventListener('load', loadDeferredStyles);
+    </script>
+
     <script src="https://www.google-analytics.com/analytics.js" async defer></script>
   </body>
 </html>
