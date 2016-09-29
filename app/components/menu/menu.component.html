@@ -9,9 +9,9 @@
             <div class="headline">igeni.us</div>
         </div>
         <ul id="menu">
-            <li><a href="/">home</a></li>
-            <li><a href="/about">about</a></li>
-            <li><a href="/contact">contact</a></li>
+            <li><a (click)="isActive=!isActive" routerLink="/" routerLinkActive="active">home</a></li>
+            <li><a (click)="isActive=!isActive" routerLink="/about" routerLinkActive="active">about</a></li>
+            <li><a (click)="isActive=!isActive" routerLink="/contact" routerLinkActive="active">contact</a></li>
         </ul>
     </div>
 </nav>

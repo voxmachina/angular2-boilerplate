@@ -7,22 +7,29 @@ import { MediumPostsComponent } from "../medium-posts/medium-posts.component";
 import { InstagramPostsComponent } from "../instagram-posts/instagram-posts.component";
 import { GithubPostsComponent } from "../github-posts/github-posts.component";
 import { MenuComponent } from "../menu/menu.component";
+import { AboutComponent } from "../about/about.component";
+import { HomeComponent } from "../home/home.component";
 
 import { MediumService } from "../../services/medium.service";
 import { InstagramService } from "../../services/instagram.service";
 import { GithubService } from "../../services/github.service";
 
+import { routing }  from "./app.routing";
+
 @NgModule({
     imports: [
         BrowserModule,
-        HttpModule
+        HttpModule,
+        routing
     ],
     declarations: [
         AppComponent,
         MediumPostsComponent,
         InstagramPostsComponent,
         GithubPostsComponent,
-        MenuComponent
+        MenuComponent,
+        AboutComponent,
+        HomeComponent
     ],
     bootstrap: [AppComponent],
     providers: [
