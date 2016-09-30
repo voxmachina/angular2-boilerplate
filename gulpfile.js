@@ -233,7 +233,10 @@ gulp.task('clean-helpers', ['clean-index'], function() {
 gulp.task('clean-index', function() {
     gulp.src('release/index.html')
         .pipe(htmlReplace({
-            'js': 'lib/helpers.min.js'
+            'js': {
+                src: [['lib/helpers.min.js']],
+                tpl: '<script src="%s" async></script>'
+            }
         }))
         .pipe(gulp.dest('release/'));
 });

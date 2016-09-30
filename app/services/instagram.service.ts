@@ -19,7 +19,6 @@ export class InstagramService {
     }
 
     extractData(res: Response): Object[] {
-        console.log(res.json());
         return res.json();
     }
 
