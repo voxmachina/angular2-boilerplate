@@ -65,8 +65,13 @@ gulp.task('copy-rxjs', function() {
  * Copy html files to build directory
  */
 gulp.task('copy-html', function() {
-    return gulp.src(['./**/*.html', '!build/**/*.html', '!node_modules/**/*'])
-        .pipe(gulp.dest('build'));
+    return gulp.src([
+        './**/*.html',
+        '.htaccess',
+        'google566ca59f98ec4318.html',
+        '!build/**/*.html',
+        '!node_modules/**/*'
+    ]).pipe(gulp.dest('build'));
 });
 
 /**
