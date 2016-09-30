@@ -1,22 +1,77 @@
 <html>
   <head>
     <base href="/">
-    <title>Home</title>
+    <title>Home | igeni.us</title>
     <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/app/main.css">
+    <link rel="apple-touch-icon" sizes="57x57" href="app-icons/apple-icon-57x57.png">
+  	<link rel="apple-touch-icon" sizes="60x60" href="app-icons/apple-icon-60x60.png">
+  	<link rel="apple-touch-icon" sizes="72x72" href="app-icons/apple-icon-72x72.png">
+  	<link rel="apple-touch-icon" sizes="76x76" href="app-icons/apple-icon-76x76.png">
+  	<link rel="apple-touch-icon" sizes="114x114" href="app-icons/apple-icon-114x114.png">
+  	<link rel="apple-touch-icon" sizes="120x120" href="app-icons/apple-icon-120x120.png">
+  	<link rel="apple-touch-icon" sizes="144x144" href="app-icons/apple-icon-144x144.png">
+  	<link rel="apple-touch-icon" sizes="152x152" href="app-icons/apple-icon-152x152.png">
+  	<link rel="apple-touch-icon" sizes="180x180" href="app-icons/apple-icon-180x180.png">
+  	<link rel="icon" type="image/png" sizes="192x192"  href="app-icons/android-icon-192x192.png">
+  	<link rel="icon" type="image/png" sizes="32x32" href="app-icons/favicon-32x32.png">
+  	<link rel="icon" type="image/png" sizes="96x96" href="app-icons/favicon-96x96.png">
+  	<link rel="icon" type="image/png" sizes="16x16" href="app-icons/favicon-16x16.png">
+
+  	<link rel="manifest" href="manifest.json">
+
+  	<meta name="msapplication-TileColor" content="#333333">
+  	<meta name="msapplication-TileImage" content="app-icons/ms-icon-144x144.png">
+  	<meta name="theme-color" content="#333333">
+  </head>
+  <body>
+    <!--[if lte IE 10]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    	your browser</a> to improve your experience and security.</p>
+    <![endif]-->
+    <dashboard>Loading...</dashboard>
+    <!-- build:js -->
     <script src="/lib/shim.min.js"></script>
     <script src="/lib/zone.js"></script>
     <script src="/lib/Reflect.js"></script>
     <script src="/lib/system.src.js"></script>
     <script src="/config/systemjs.config.js"></script>
+    <!-- endbuild -->
+
     <script>
       System.import('app').catch(function(err) {
         if (console) console.error(err);
       });
     </script>
-  </head>
-  <body>
-    <dashboard>Loading...</dashboard>
+
+    <script>
+    	window.ga = function () {
+    		ga.q.push(arguments)
+    	};
+    	ga.q = [];
+    	ga.l = +new Date;
+    	ga('create', 'UA-51956545-1', 'auto');
+    	ga('send', 'pageview')
+    </script>
+
+    <noscript id="deferred-styles">
+      <link rel="stylesheet" type="text/css" href="app/main.css"/>
+    </noscript>
+    <script>
+      var loadDeferredStyles = function() {
+        var addStylesNode = document.getElementById("deferred-styles");
+        var replacement = document.createElement("div");
+        replacement.innerHTML = addStylesNode.textContent;
+        document.body.appendChild(replacement)
+        addStylesNode.parentElement.removeChild(addStylesNode);
+      };
+      var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+          webkitRequestAnimationFrame || msRequestAnimationFrame;
+      if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+      else window.addEventListener('load', loadDeferredStyles);
+    </script>
+
+    <script src="https://www.google-analytics.com/analytics.js" async defer></script>
   </body>
 </html>

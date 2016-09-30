@@ -16,6 +16,9 @@
       "**/*.tsx"
     ],
     "exclude": [
-      "node_modules"
+      "node_modules",
+      "api",
+      "build/api",
+      "build/node_modules"
     ]
 }

@@ -1,0 +1,43 @@
+@import "../../../node_modules/sass-flex-mixin/flex";
+
+h4 {
+    font-size: 11px;
+}
+
+li,
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin: 0 0 20px;
+    padding: 10px;
+    @include flexbox();
+    @include flex-direction(column);
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    border: 1px solid rgba(0,0,0,.09);
+}
+
+span {
+    font-size: 0.5rem;
+    font-weight: bold;
+    color: #999;
+}
+
+.posts {
+    max-width: 768px;
+    margin: 0 auto;
+}
+
+.thumbnail {
+    height: auto;
+    width: 100%;
+    margin: 0 0 10px;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+    }
+}

@@ -1,3 +1,7 @@
 build
 node_modules
 typings
+dist
+release
+config/gulp.json
+google*

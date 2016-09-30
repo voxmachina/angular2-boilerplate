@@ -1,0 +1,17 @@
+<nav>
+    <div id="toggle" [class.active]="isActive">
+        <div class="header">
+            <div class="burguer" (click)="isActive=!isActive">
+                <span class="burguer-row-1"></span>
+                <span class="burguer-row-2"></span>
+                <span class="burguer-row-3"></span>
+            </div>
+            <div class="headline">igeni.us</div>
+        </div>
+        <ul id="menu">
+            <li><a (click)="isActive=!isActive" [routerLinkActiveOptions]="{ exact: true }" routerLink="/" routerLinkActive="active">Home</a></li>
+            <li><a (click)="isActive=!isActive" routerLink="/about" routerLinkActive="active">About</a></li>
+            <li><a (click)="isActive=!isActive" routerLink="/contact" routerLinkActive="active">Contact</a></li>
+        </ul>
+    </div>
+</nav>
