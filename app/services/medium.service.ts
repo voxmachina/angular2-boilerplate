@@ -21,31 +21,7 @@ export class MediumService {
     }
 
     extractData(res: Response): Object[] {
-        let body = res.json();
-        let posts = body.payload.references.Post || {};
-        let content = [];
-
-        for (let postId in posts) {
-            if (posts.hasOwnProperty(postId)) {
-                let aPost = posts[postId];
-                let aContentItem = {
-                    id: aPost.id,
-                    title: aPost.title,
-                    subTitle: aPost.content.subtitle,
-                    url: this.postUrlPrefix + aPost.uniqueSlug,
-                    createdAt: aPost.virtuals.createdAtEnglish,
-                    thumbnail: ""
-                };
-
-                if (aPost.virtuals.previewImage.imageId !== "") {
-                    aContentItem.thumbnail = this.imageUrlPrefix + aPost.virtuals.previewImage.imageId;
-                }
-
-                content.push(aContentItem);
-            }
-        }
-
-        return content;
+        return res.json();
     }
 
     handleError(error: any): Promise<void> {

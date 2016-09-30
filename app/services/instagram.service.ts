@@ -19,49 +19,8 @@ export class InstagramService {
     }
 
     extractData(res: Response): Object[] {
-        let body = res.json();
-        let posts = body.data || {};
-        let content = [];
-
-        for (let postId in posts) {
-            if (posts.hasOwnProperty(postId)) {
-                let aPost = posts[postId];
-                let aContentItem = {
-                    id: aPost.id,
-                    title: "",
-                    subTitle: "",
-                    url: aPost.link,
-                    createdAt: this.convertDate(aPost.created_time),
-                    thumbnail: aPost.images.standard_resolution.url
-                };
-
-                if (aPost.caption !== null && aPost.caption.text !== null) {
-                    aContentItem.title = aPost.caption.text;
-                }
-
-                if (aPost.location !== null && aPost.location.name !== null) {
-                    aContentItem.subTitle = aPost.location.name;
-                }
-
-                content.push(aContentItem);
-            }
-        }
-
-        return content;
-    }
-
-    convertDate(timestamp) {
-        let a = new Date(timestamp * 1000);
-        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        let year = a.getFullYear();
-        let month = months[a.getMonth()];
-        let date = a.getDate();
-        let hour = a.getHours();
-        let min = a.getMinutes();
-        let sec = a.getSeconds();
-        let time = date + " " + month + " " + year;
-
-        return time;
+        console.log(res.json());
+        return res.json();
     }
 
     handleError(error: any): Promise<void> {

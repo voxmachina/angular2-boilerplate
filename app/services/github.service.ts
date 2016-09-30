@@ -19,27 +19,7 @@ export class GithubService {
     }
 
     extractData(res: Response): Object[] {
-        let body = res.json();
-
-        let posts = body || {};
-        let content = [];
-
-        for (let postId in posts) {
-            if (posts.hasOwnProperty(postId)) {
-                let aPost = posts[postId];
-                let aContentItem = {
-                    id: aPost.id,
-                    title: aPost.name,
-                    subTitle: aPost.description,
-                    url: aPost.html_url,
-                    createdAt: aPost.pushed_at
-                };
-
-                content.push(aContentItem);
-            }
-        }
-
-        return content;
+        return res.json();
     }
 
     handleError(error: any): Promise<void> {
