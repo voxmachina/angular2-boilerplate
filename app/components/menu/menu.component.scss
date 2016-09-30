@@ -7,11 +7,31 @@
     left: 0;
     z-index: 1;
     user-select: none;
-    height: 100%;
+    height: 0;
     width: 100%;
+    transition: height 1s linear;
 
     a {
         text-decoration: none;
+        transition: color 0.4s ease;
+        color: #ffffff;
+
+        &:link,
+        &:visited {
+            color: #ffffff;
+        }
+
+        &:hover {
+            color: #d04a20;
+        }
+
+        &.active {
+            color: #d04a20;
+        }
+
+        &:active {
+            color: #ffffff;
+        }
     }
 
     .header {
@@ -56,10 +76,10 @@
 
     #menu {
         height: 100%;
-        width: 75%;
+        width: 100%;
         margin: -100px 0 0 -50px;
-        padding: 110px 50px 50px 60px;
-        background: #ededed;
+        padding: 130px 50px 50px 80px;
+        background: rgba(25, 27, 29, .95);
         list-style-type: none;
         -webkit-font-smoothing: antialiased;
         transform-origin: 0 0;
@@ -73,15 +93,17 @@
     }
 
     &.active {
+        height: 100%;
+        transition: height .1s linear;
+
         #menu {
             transform: scale(1.0, 1.0);
-            opacity: 1;
+            opacity: 0.95;
         }
 
         span {
             opacity: 1;
             transform: rotate(45deg) translate(8px, -11px);
-            background: #232323;
         }
 
         .burguer-row-2 {
