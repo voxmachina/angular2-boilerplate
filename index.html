@@ -50,7 +50,9 @@
     </script>
 
     <noscript id="deferred-styles">
+      <!-- build:css -->
       <link rel="stylesheet" type="text/css" href="app/main.css"/>
+      <!-- endbuild -->
     </noscript>
     <script>
       var loadDeferredStyles = function() {
@@ -65,7 +67,8 @@
       if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
       else window.addEventListener('load', loadDeferredStyles);
     </script>
-
-    <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+    <!-- build:analytics -->
+    <script src="http://localhost:8080/services/content/public/analytics.js" async defer></script>
+    <!-- endbuild -->
   </body>
 </html>

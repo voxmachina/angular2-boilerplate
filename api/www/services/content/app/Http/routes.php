@@ -3,6 +3,7 @@
 use App\Http\Controllers\MediumController;
 use App\Http\Controllers\InstagramController;
 use App\Http\Controllers\GithubController;
+use App\Http\Controllers\AnalyticsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,4 +38,14 @@ $app->get('instagram', function() use ($app) {
 */
 $app->get('medium', function () use ($app) {
     return MediumController::getData();
+});
+
+/**
+ * Locally cache google analytics file per two hours
+ */
+$app->get('analytics.{timestamp}.js', function () use ($app) {
+    return AnalyticsController::getAnalytics();
+});
+$app->get('analytics.js', function () use ($app) {
+    return AnalyticsController::getAnalytics();
 });

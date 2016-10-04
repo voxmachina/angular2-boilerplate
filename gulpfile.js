@@ -21,6 +21,7 @@ const tar = require('gulp-tar');
 const gzip = require('gulp-gzip');
 const GulpSSH = require('gulp-ssh');
 const fs = require('fs');
+const rename = require("gulp-rename");
 const runSequence = require('run-sequence');
 const tsProject = ts.createProject('tsconfig.json');
 const config = require('./config/gulp.json');
@@ -31,6 +32,19 @@ let gulpSSH = new GulpSSH({
     ignoreErrors: false,
     sshConfig: config.ssh
 });
+
+gulp.task('copy-htaccess-main', function() {
+    return gulp.src('./app/.htaccess').pipe(gulp.dest('./release/app'));
+});
+
+gulp.task('copy-htaccess-lib', function() {
+    return gulp.src('./app/.htaccess').pipe(gulp.dest('./release/lib'));
+});
+
+/**
+ * app htaccess file
+ */
+gulp.task('copy-htaccess', ['copy-htaccess-main', 'copy-htaccess-lib']);
 
 /**
  * Copy scripts to build/lib directory
@@ -234,8 +248,16 @@ gulp.task('clean-index', function() {
     gulp.src('release/index.html')
         .pipe(htmlReplace({
             'js': {
-                src: [['lib/helpers.min.js']],
-                tpl: '<script src="%s" async></script>'
+                src: [['lib/helpers.min.'+currentDateTimeStamp+'.js']],
+                tpl: '<script>var currentDateTimeStamp = '+currentDateTimeStamp+';</script><script src="%s" async></script>'
+            },
+            'analytics': {
+                src: [['/api/www/services/content/public/analytics.'+currentDateTimeStamp+'.js']],
+                tpl: '<script src="%s" async defer></script>'
+            },
+            'css': {
+                src: [['/app/main.'+currentDateTimeStamp+'.css']],
+                tpl: '<link rel="stylesheet" type="text/css" href="%s"/>'
             }
         }))
         .pipe(gulp.dest('release/'));
@@ -372,12 +394,28 @@ gulp.task('clean-release', function(cb) {
         cb);
 });
 
+/**
+ * Bustcache files
+ */
+gulp.task('timestamp', function() {
+    return gulp.src(["./release/app/*.css", "./release/app/*.js", "./release/lib/*.js"])
+      .pipe(rename(function (path) {
+          if (path.basename === 'helpers.min') {
+              path.dirname = 'lib'
+          } else {
+              path.dirname = 'app'
+          }
+        path.basename += "." + currentDateTimeStamp;
+        return path;
+    })).pipe(gulp.dest("./release/"));
+});
+
 gulp.task('stage', function(done) {
-    runSequence('build', 'release', 'minify-html-css', 'inline', 'bundle', 'uglify', 'clean-helpers', 'clean-release');
+    runSequence('build', 'release', 'copy-htaccess', 'minify-html-css', 'inline', 'bundle', 'uglify', 'clean-helpers', 'clean-release', 'timestamp');
     done();
 });
 
 gulp.task('deploy', function(done) {
-    runSequence('build', 'release', 'minify-html-css', 'inline', 'bundle', 'uglify', 'clean-helpers', 'clean-release', 'symlink', 'clean');
+    runSequence('build', 'release', 'copy-htaccess', 'minify-html-css', 'inline', 'bundle', 'uglify', 'clean-helpers', 'clean-release', 'timestamp', 'symlink', 'clean');
     done();
 });
