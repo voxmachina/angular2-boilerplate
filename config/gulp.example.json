@@ -1,8 +1,9 @@
 {
-  "ssh": {
-    "host": "site.com",
-    "port": 22,
-    "username": "SSH_USERNAME",
-    "password": "SSH_PASSWORD"
-  }
+    "ssh": {
+        "host": "site.com",
+        "port": 22,
+        "username": "SSH_USERNAME",
+        "password": "SSH_PASSWORD"
+    },
+    "googleKey": "your-google-site-verification-key"
 }

@@ -68,7 +68,7 @@ gulp.task('copy-html', function() {
     return gulp.src([
         './**/*.html',
         '.htaccess',
-        'google566ca59f98ec4318.html',
+        config.googleKey + '.html',
         '!build/**/*.html',
         '!node_modules/**/*'
     ]).pipe(gulp.dest('build'));
