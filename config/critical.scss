@@ -34,6 +34,7 @@ em {
 .posts {
     max-width: 768px;
     margin: 0 auto;
+    opacity: 0.5;
 
     h4 {
         font-size: 11px;
@@ -83,6 +84,7 @@ em {
     height: 0;
     width: 100%;
     transition: height 1s linear;
+    opacity: 0.5;
 
     .header {
         @include flexbox();
