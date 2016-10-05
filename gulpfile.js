@@ -259,6 +259,14 @@ gulp.task('clean-index', function() {
             'css': {
                 src: [['/app/main.'+currentDateTimeStamp+'.css']],
                 tpl: '<link rel="stylesheet" type="text/css" href="%s"/>'
+            },
+            'criticalCss': {
+                src: gulp.src('./config/critical.scss').pipe(sass()),
+                tpl: '<style>%s</style>'
+            },
+            'criticalHtml': {
+                src: gulp.src('./config/critical.html').pipe(htmlMin()),
+                tpl: '<?php $rootDir = "'+config.rootDir+'"; ?>%s'
             }
         }))
         .pipe(gulp.dest('release/'));
@@ -346,17 +354,19 @@ gulp.task('copy', ['copy-scripts', 'copy-html', 'copy-config', 'copy-rxjs', 'cop
 gulp.task('build', ['compile-typescript', 'copy', 'sass']);
 gulp.task('release', ['copy-build']);
 gulp.task('compress', function() {
+    let rootDir = config.rootDir;
+
     return gulp.src(['release/**/*'], {
             dot: true
         })
         .pipe(tar('release-' + currentDateTimeStamp + '.tar'))
         .pipe(gzip())
         .pipe(gulp.dest('dist'))
-        .pipe(gulpSSH.sftp('write', '/home/dh_voxmachina/igenius_releases/release-' + currentDateTimeStamp + '.tar.gz'));
+        .pipe(gulpSSH.sftp('write', rootDir + 'release-' + currentDateTimeStamp + '.tar.gz'));
 });
 
 gulp.task('symlink', ['compress'], function() {
-    let rootDir = '/home/dh_voxmachina/igenius_releases/';
+    let rootDir = config.rootDir;
 
     return gulpSSH
         .exec([
@@ -364,7 +374,9 @@ gulp.task('symlink', ['compress'], function() {
             'tar -xvf ' + rootDir + 'release-' + currentDateTimeStamp + '.tar.gz -C ' + rootDir + currentDateTimeStamp,
             'rm -rf ' + rootDir + 'release-' + currentDateTimeStamp + '.tar.gz',
             'rm -rf ' + rootDir + 'current',
-            'ln -s ' + rootDir + currentDateTimeStamp + ' ' + rootDir + 'current'
+            'ln -s ' + rootDir + currentDateTimeStamp + ' ' + rootDir + 'current',
+            'mv ' + rootDir + currentDateTimeStamp + '/index.html ' + rootDir + currentDateTimeStamp + '/api/www/services/content/resources/views/index.php',
+            'ln -s ' + rootDir + currentDateTimeStamp + '/api/www/services/content/resources/views/index.php ' + rootDir + currentDateTimeStamp + '/index.php'
         ]);
 });
 
