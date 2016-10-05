@@ -30,7 +30,15 @@
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
     	your browser</a> to improve your experience and security.</p>
     <![endif]-->
-    <dashboard>Loading...</dashboard>
+
+    <dashboard>
+        <!-- build:criticalCss -->
+        <!-- endbuild -->
+
+        <!-- build:criticalHtml -->
+        <!-- endbuild -->
+    </dashboard>
+
     <!-- build:js -->
     <script src="/lib/shim.min.js"></script>
     <script src="/lib/zone.js"></script>
@@ -38,12 +46,6 @@
     <script src="/lib/system.src.js"></script>
     <script src="/config/systemjs.config.js"></script>
     <!-- endbuild -->
-
-    <script>
-      System.import('app').catch(function(err) {
-        if (console) console.error(err);
-      });
-    </script>
 
     <script>
     	window.ga = function () {
@@ -56,7 +58,9 @@
     </script>
 
     <noscript id="deferred-styles">
+      <!-- build:css -->
       <link rel="stylesheet" type="text/css" href="app/main.css"/>
+      <!-- endbuild -->
     </noscript>
     <script>
       var loadDeferredStyles = function() {
@@ -71,7 +75,8 @@
       if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
       else window.addEventListener('load', loadDeferredStyles);
     </script>
-
-    <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+    <!-- build:analytics -->
+    <script src="http://localhost:8080/services/content/public/analytics.js" async defer></script>
+    <!-- endbuild -->
   </body>
 </html>

@@ -21,6 +21,7 @@ const tar = require('gulp-tar');
 const gzip = require('gulp-gzip');
 const GulpSSH = require('gulp-ssh');
 const fs = require('fs');
+const rename = require("gulp-rename");
 const runSequence = require('run-sequence');
 const tsProject = ts.createProject('tsconfig.json');
 const config = require('./config/gulp.json');
@@ -31,6 +32,19 @@ let gulpSSH = new GulpSSH({
     ignoreErrors: false,
     sshConfig: config.ssh
 });
+
+gulp.task('copy-htaccess-main', function() {
+    return gulp.src('./app/.htaccess').pipe(gulp.dest('./release/app'));
+});
+
+gulp.task('copy-htaccess-lib', function() {
+    return gulp.src('./app/.htaccess').pipe(gulp.dest('./release/lib'));
+});
+
+/**
+ * app htaccess file
+ */
+gulp.task('copy-htaccess', ['copy-htaccess-main', 'copy-htaccess-lib']);
 
 /**
  * Copy scripts to build/lib directory
@@ -67,10 +81,11 @@ gulp.task('copy-rxjs', function() {
 gulp.task('copy-html', function() {
     return gulp.src([
         './**/*.html',
+        '!./build/**/*.html',
+        '!./node_modules/**/*.html',
+        '!./api/**/*.html',
         '.htaccess',
-        'google566ca59f98ec4318.html',
-        '!build/**/*.html',
-        '!node_modules/**/*'
+        config.googleKey + '.html'
     ]).pipe(gulp.dest('build'));
 });
 
@@ -233,7 +248,26 @@ gulp.task('clean-helpers', ['clean-index'], function() {
 gulp.task('clean-index', function() {
     gulp.src('release/index.html')
         .pipe(htmlReplace({
-            'js': 'lib/helpers.min.js'
+            'js': {
+                src: [['lib/helpers.min.'+currentDateTimeStamp+'.js']],
+                tpl: '<script>var currentDateTimeStamp = '+currentDateTimeStamp+';</script><script src="%s" async></script>'
+            },
+            'analytics': {
+                src: [['/api/www/services/content/public/analytics.'+currentDateTimeStamp+'.js']],
+                tpl: '<script src="%s" async defer></script>'
+            },
+            'css': {
+                src: [['/app/main.'+currentDateTimeStamp+'.css']],
+                tpl: '<link rel="stylesheet" type="text/css" href="%s"/>'
+            },
+            'criticalCss': {
+                src: gulp.src('./config/critical.scss').pipe(sass()),
+                tpl: '<style>%s</style>'
+            },
+            'criticalHtml': {
+                src: gulp.src('./config/critical.html').pipe(htmlMin()),
+                tpl: '<?php $rootDir = "'+config.rootDir+'"; ?>%s'
+            }
         }))
         .pipe(gulp.dest('release/'));
 });
@@ -308,9 +342,9 @@ gulp.task('bundle', function() {
  * Watcher
  */
 gulp.task('dev', ['build'], function() {
-    gulp.watch(['./**/*.scss'], ['sass']);
-    gulp.watch(['./**/*.ts'], ['compile-typescript']);
-    gulp.watch(['./**/*.html', '!build/**/*.html'], ['copy-html']);
+    gulp.watch(['./app/**/*.scss'], ['sass']);
+    gulp.watch(['./app/**/*.ts'], ['compile-typescript']);
+    gulp.watch(['./index.html', './app/**/*.html'], ['copy-html']);
 });
 
 /**
@@ -320,17 +354,19 @@ gulp.task('copy', ['copy-scripts', 'copy-html', 'copy-config', 'copy-rxjs', 'cop
 gulp.task('build', ['compile-typescript', 'copy', 'sass']);
 gulp.task('release', ['copy-build']);
 gulp.task('compress', function() {
+    let rootDir = config.rootDir;
+
     return gulp.src(['release/**/*'], {
             dot: true
         })
         .pipe(tar('release-' + currentDateTimeStamp + '.tar'))
         .pipe(gzip())
         .pipe(gulp.dest('dist'))
-        .pipe(gulpSSH.sftp('write', '/home/dh_voxmachina/igenius_releases/release-' + currentDateTimeStamp + '.tar.gz'));
+        .pipe(gulpSSH.sftp('write', rootDir + 'release-' + currentDateTimeStamp + '.tar.gz'));
 });
 
 gulp.task('symlink', ['compress'], function() {
-    let rootDir = '/home/dh_voxmachina/igenius_releases/';
+    let rootDir = config.rootDir;
 
     return gulpSSH
         .exec([
@@ -338,7 +374,9 @@ gulp.task('symlink', ['compress'], function() {
             'tar -xvf ' + rootDir + 'release-' + currentDateTimeStamp + '.tar.gz -C ' + rootDir + currentDateTimeStamp,
             'rm -rf ' + rootDir + 'release-' + currentDateTimeStamp + '.tar.gz',
             'rm -rf ' + rootDir + 'current',
-            'ln -s ' + rootDir + currentDateTimeStamp + ' ' + rootDir + 'current'
+            'ln -s ' + rootDir + currentDateTimeStamp + ' ' + rootDir + 'current',
+            'mv ' + rootDir + currentDateTimeStamp + '/index.html ' + rootDir + currentDateTimeStamp + '/api/www/services/content/resources/views/index.php',
+            'ln -s ' + rootDir + currentDateTimeStamp + '/api/www/services/content/resources/views/index.php ' + rootDir + currentDateTimeStamp + '/index.php'
         ]);
 });
 
@@ -369,12 +407,28 @@ gulp.task('clean-release', function(cb) {
         cb);
 });
 
+/**
+ * Bustcache files
+ */
+gulp.task('timestamp', function() {
+    return gulp.src(["./release/app/*.css", "./release/app/*.js", "./release/lib/*.js"])
+      .pipe(rename(function (path) {
+          if (path.basename === 'helpers.min') {
+              path.dirname = 'lib'
+          } else {
+              path.dirname = 'app'
+          }
+        path.basename += "." + currentDateTimeStamp;
+        return path;
+    })).pipe(gulp.dest("./release/"));
+});
+
 gulp.task('stage', function(done) {
-    runSequence('build', 'release', 'minify-html-css', 'inline', 'bundle', 'uglify', 'clean-helpers', 'clean-release');
+    runSequence('build', 'release', 'copy-htaccess', 'minify-html-css', 'inline', 'bundle', 'uglify', 'clean-helpers', 'clean-release', 'timestamp');
     done();
 });
 
 gulp.task('deploy', function(done) {
-    runSequence('build', 'release', 'minify-html-css', 'inline', 'bundle', 'uglify', 'clean-helpers', 'clean-release', 'symlink', 'clean');
+    runSequence('build', 'release', 'copy-htaccess', 'minify-html-css', 'inline', 'bundle', 'uglify', 'clean-helpers', 'clean-release', 'timestamp', 'symlink', 'clean');
     done();
 });

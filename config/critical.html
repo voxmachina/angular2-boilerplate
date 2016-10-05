@@ -1,0 +1,38 @@
+<nav>
+    <div id="toggle">
+        <div class="header">
+            <div class="burguer">
+                <span class="burguer-row-1"></span>
+                <span class="burguer-row-2"></span>
+                <span class="burguer-row-3"></span>
+            </div>
+            <div class="headline">igeni.us</div>
+        </div>
+    </div>
+</nav>
+
+<?php
+    $posts = [];
+    $filename = $rootDir . 'current/api/www/services/content/storage/medium.json';
+
+    if (file_exists($filename)) {
+        $posts = json_decode(file_get_contents($filename));
+    }
+?>
+<div class="posts">
+    <h4>Latest posts from medium</h4>
+    <ul>
+        <?php foreach($posts as $post): ?>
+        <li >
+            <?php if (isset($post->thumbnail) && $post->thumbnail !== ''): ?>
+            <div class="thumbnail">
+                <img src="<?php echo $post->thumbnail; ?>"/>
+            </div>
+            <?php endif; ?>
+            <a href="<?php echo $post->url; ?>"><?php echo $post->title; ?></a>
+            <em><?php echo $post->subTitle; ?></em>
+            <span><?php echo $post->createdAt; ?></span>
+        </li>
+        <?php endforeach; ?>
+    </ul>
+</div>

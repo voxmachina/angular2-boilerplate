@@ -1,0 +1,128 @@
+@import "../node_modules/sass-flex-mixin/flex";
+@import "../node_modules/bootstrap/scss/normalize";
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    padding: 50px 10px 10px 10px;;
+    margin: 0;
+    height: 100%;
+}
+
+a {
+    transition: color 0.4s ease;
+    color: #265C83;
+
+    &:link,
+    &:visited {
+        color: #265C83;
+    }
+
+    &:hover {
+        color: #7FDBFF;
+    }
+
+    &:active {
+        transition: color 0.3s;
+        color: #007BE6;
+    }
+}
+
+em {
+    font-size: 0.8rem;
+}
+
+.posts {
+    max-width: 768px;
+    margin: 0 auto;
+    opacity: 0.5;
+
+    h4 {
+        font-size: 11px;
+    }
+
+    li,
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        margin: 0 0 20px;
+        padding: 10px;
+        @include flexbox();
+        @include flex-direction(column);
+        background: #fff;
+        box-shadow: 0 1px 4px rgba(0,0,0,.04);
+        border: 1px solid rgba(0,0,0,.09);
+    }
+
+    .thumbnail {
+        height: 100px;
+        width: 100%;
+        margin: 0 0 10px;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    span {
+        font-size: 0.5rem;
+        font-weight: bold;
+        color: #999;
+    }
+}
+
+#toggle {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    user-select: none;
+    height: 0;
+    width: 100%;
+    transition: height 1s linear;
+    opacity: 0.5;
+
+    .header {
+        @include flexbox();
+        @include flex-direction(row);
+        background: #333;
+        padding: 8px 5px 5px 5px;
+        color: #fff;
+
+        .headline {
+            @include flex-grow(1);
+            text-align: center;
+        }
+    }
+
+    .burguer {
+        cursor: pointer;
+    }
+
+    span {
+        display: block;
+        width: 33px;
+        height: 4px;
+        margin-bottom: 5px;
+        position: relative;
+        background: #ffffff;
+        border-radius: 3px;
+        z-index: 1;
+        transition:
+            transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0),
+            background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0),
+            opacity 0.55s ease;
+
+        &.burguer-row-1 {
+            transform-origin: 0 0;
+        }
+
+        &.burguer-row-3 {
+            transform-origin: 0 100%;
+        }
+    }
+}
