@@ -81,10 +81,11 @@ gulp.task('copy-rxjs', function() {
 gulp.task('copy-html', function() {
     return gulp.src([
         './**/*.html',
+        '!./build/**/*.html',
+        '!./node_modules/**/*.html',
+        '!./api/**/*.html',
         '.htaccess',
-        config.googleKey + '.html',
-        '!build/**/*.html',
-        '!node_modules/**/*'
+        config.googleKey + '.html'
     ]).pipe(gulp.dest('build'));
 });
 
@@ -333,9 +334,9 @@ gulp.task('bundle', function() {
  * Watcher
  */
 gulp.task('dev', ['build'], function() {
-    gulp.watch(['./**/*.scss'], ['sass']);
-    gulp.watch(['./**/*.ts'], ['compile-typescript']);
-    gulp.watch(['./**/*.html', '!build/**/*.html'], ['copy-html']);
+    gulp.watch(['./app/**/*.scss'], ['sass']);
+    gulp.watch(['./app/**/*.ts'], ['compile-typescript']);
+    gulp.watch(['./index.html', './app/**/*.html'], ['copy-html']);
 });
 
 /**
