@@ -9,6 +9,7 @@ const htmlMin = require('gulp-html-minifier');
 const GulpSSH = require('gulp-ssh');
 const config = require('./../../config/gulp.json');
 const rename = require('gulp-rename');
+const exec = require('child_process').exec;
 
 let currentDateTimeStamp = new Date().getTime();
 
@@ -69,9 +70,9 @@ gulp.task('symlink:prepare', ['symlink:helpers'], function() {
         .pipe(gulpSSH.sftp('write', rootDir + 'release-' + currentDateTimeStamp + '.tar.gz'));
 });
 
-gulp.task('symlink', ['symlink:prepare'], function() {
+gulp.task('symlink:create', ['symlink:prepare'], function() {
     let rootDir = config.rootDir;
-
+    
     return gulpSSH
         .exec([
             'mkdir ' + rootDir + currentDateTimeStamp,
@@ -82,4 +83,20 @@ gulp.task('symlink', ['symlink:prepare'], function() {
             'mv ' + rootDir + currentDateTimeStamp + '/index.html ' + rootDir + currentDateTimeStamp + '/api/www/services/content/resources/views/index.php',
             'ln -s ' + rootDir + currentDateTimeStamp + '/api/www/services/content/resources/views/index.php ' + rootDir + currentDateTimeStamp + '/index.php'
         ]);
+});
+
+gulp.task('symlink', ['symlink:create'], function() {
+    let zoneId = config.cloudflare.zoneId;
+    let apiKey = config.cloudflare.apiKey;
+    let email = config.cloudflare.email;
+
+    let cachePurge = 'curl -X DELETE "https://api.cloudflare.com/client/v4/zones/'+zoneId+'/purge_cache" -H "X-Auth-Email: '+email+'" -H "X-Auth-Key: '+apiKey+'" -H "Content-Type: application/json" --data \'{"purge_everything":true}\'';
+
+    gulp.task('task', function (cb) {
+      exec(cachePurge, function (err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+        cb(err);
+      });
+    })
 });

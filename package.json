@@ -44,6 +44,7 @@
     "gulp-babel": "6.1.2",
     "gulp-clean-css": "2.0.13",
     "gulp-concat": "2.6.0",
+    "gulp-exec": "2.1.2",
     "gulp-gzip": "1.4.0",
     "gulp-html-minifier": "0.1.8",
     "gulp-html-replace": "1.6.1",
