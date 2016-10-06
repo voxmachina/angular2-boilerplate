@@ -10,6 +10,7 @@ const GulpSSH = require('gulp-ssh');
 const config = require('./../../config/gulp.json');
 const rename = require('gulp-rename');
 const exec = require('child_process').exec;
+const del = require('del');
 
 let currentDateTimeStamp = new Date().getTime();
 
@@ -48,17 +49,44 @@ gulp.task('symlink:index', function() {
 gulp.task('symlink:helpers', ['symlink:index'], function() {
     return gulp.src(["./release/app/*.css", "./release/app/*.js", "./release/lib/*.js"])
       .pipe(rename(function (path) {
-          if (path.basename === 'helpers.min') {
-              path.dirname = 'lib'
-          } else {
+          if (path.basename === 'main' || path.basename === 'config') {
               path.dirname = 'app'
+          } else {
+              path.dirname = 'lib'
           }
         path.basename += "." + currentDateTimeStamp;
         return path;
     })).pipe(gulp.dest("./release/"));
 });
 
-gulp.task('symlink:prepare', ['symlink:helpers'], function() {
+gulp.task('symlink:clean', ['symlink:helpers'], function() {
+    return del([
+            'release/app/main.js',
+            'release/app/main.css',
+            'release/app/services',
+            'release/app/config.*',
+            'release/config',
+            'release/app/models',
+            'release/app/services',
+            'release/app/components',
+            'release/lib/shim.*',
+            'release/lib/helpers.min.js',
+            'release/lib/zone.*',
+            'release/lib/Reflect.*',
+            'release/lib/system.*',
+            'release/lib/core.*',
+            'release/lib/common.*',
+            'release/lib/compiler.*',
+            'release/lib/platform-browser.*',
+            'release/lib/platform-browser-dynamic.*',
+            'release/lib/http.*',
+            'release/lib/router.*',
+            'release/lib/forms.*',
+            'release/lib/rxjs'
+        ]);
+});
+
+gulp.task('symlink:prepare', ['symlink:clean'], function() {
     let rootDir = config.rootDir;
 
     return gulp.src(['release/**/*'], {
@@ -72,7 +100,7 @@ gulp.task('symlink:prepare', ['symlink:helpers'], function() {
 
 gulp.task('symlink:create', ['symlink:prepare'], function() {
     let rootDir = config.rootDir;
-    
+
     return gulpSSH
         .exec([
             'mkdir ' + rootDir + currentDateTimeStamp,
@@ -92,11 +120,8 @@ gulp.task('symlink', ['symlink:create'], function() {
 
     let cachePurge = 'curl -X DELETE "https://api.cloudflare.com/client/v4/zones/'+zoneId+'/purge_cache" -H "X-Auth-Email: '+email+'" -H "X-Auth-Key: '+apiKey+'" -H "Content-Type: application/json" --data \'{"purge_everything":true}\'';
 
-    gulp.task('task', function (cb) {
-      exec(cachePurge, function (err, stdout, stderr) {
-        console.log(stdout);
-        console.log(stderr);
-        cb(err);
-      });
-    })
+     exec(cachePurge, function(err, stdout, stderr) {
+         console.log(stdout);
+         console.log(stderr);
+     });
 });
