@@ -8,6 +8,7 @@ gulp.task('deploy', function() {
         'build',
         'release',
         'inline',
+        'aot',
         'bundle',
         'minify',
         'symlink',

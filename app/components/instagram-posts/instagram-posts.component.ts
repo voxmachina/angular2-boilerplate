@@ -3,7 +3,6 @@ import { InstagramPost } from "../../models/instagram-post";
 import { InstagramService } from "../../services/instagram.service";
 
 @Component({
-    moduleId: module.id,
     selector: "instagram-posts",
     templateUrl: "instagram-posts.component.html",
     styleUrls: ["instagram-posts.component.css"]

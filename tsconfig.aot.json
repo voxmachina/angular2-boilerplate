@@ -9,8 +9,8 @@
         "removeComments": false,
         "noImplicitAny": false,
         "suppressImplicitAnyIndexErrors": true,
-        "rootDir": "app",
-        "outDir": "aot/app"
+        "rootDir": "release",
+        "outDir": "release/app"
     },
     "compileOnSave": false,
     "buildOnSave": false,
@@ -20,7 +20,7 @@
         "typings/index.d.ts"
     ],
     "angularCompilerOptions": {
-        "genDir": "aot",
+        "genDir": "release",
         "skipMetadataEmit": true
     }
 }

@@ -13,23 +13,22 @@ gulp.task('minify:concat:helpers', function() {
             'release/lib/shim.min.js',
             'release/lib/zone.js',
             'release/lib/Reflect.js',
-            'release/lib/system.src.js',
-            'release/config/systemjs.config.js'
+            'release/app/main.js'
         ])
         .pipe(concat({
-            path: 'helpers.min.js',
+            path: 'main.js',
             stat: {
                 mode: '0666'
             }
         }))
-        .pipe(gulp.dest('release/lib'));
+        .pipe(gulp.dest('release/app'));
 });
 
 gulp.task('minify:helpers', ['minify:concat:helpers'], function(cb) {
     pump([
-            gulp.src(['release/lib/helpers.min.js']),
+            gulp.src(['release/main.js']),
             uglify(),
-            gulp.dest('release/lib')
+            gulp.dest('release/app')
         ],
         cb
     );

@@ -8,7 +8,9 @@ gulp.task('stage', function() {
         'build',
         'release',
         'inline',
+        'aot',
         'bundle',
-        'minify'
+        'minify',
+        'symlink:clean'
     );
 });

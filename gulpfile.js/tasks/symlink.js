@@ -23,7 +23,7 @@ gulp.task('symlink:index', function() {
     gulp.src('release/index.html')
         .pipe(htmlReplace({
             'js': {
-                src: [['lib/helpers.min.'+currentDateTimeStamp+'.js']],
+                src: [['app/main.'+currentDateTimeStamp+'.js']],
                 tpl: '<script>var currentDateTimeStamp = '+currentDateTimeStamp+';</script><script src="%s" async></script>'
             },
             'analytics': {
