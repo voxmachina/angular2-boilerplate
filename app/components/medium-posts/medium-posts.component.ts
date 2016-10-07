@@ -4,8 +4,8 @@ import { MediumService } from "../../services/medium.service";
 
 @Component({
     selector: "medium-posts",
-    templateUrl: "./medium-posts.component.html",
-    styleUrls: ["./medium-posts.component.css"]
+    templateUrl: "./app/components/medium-posts/medium-posts.component.html",
+    styleUrls: ["./app/components/medium-posts/medium-posts.component.css"]
 })
 
 export class MediumPostsComponent implements OnInit {

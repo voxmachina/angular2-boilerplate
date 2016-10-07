@@ -3,7 +3,7 @@
         "target": "es5",
         "module": "commonjs",
         "moduleResolution": "node",
-        "sourceMap": false,
+        "sourceMap": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "removeComments": false,
@@ -12,8 +12,8 @@
     "compileOnSave": false,
     "buildOnSave": false,
     "filesGlob": [
-        "**/*.ts",
-        "**/*.tsx"
+        "app/**/*.ts",
+        "app/**/*.tsx"
     ],
     "exclude": [
         "node_modules",
