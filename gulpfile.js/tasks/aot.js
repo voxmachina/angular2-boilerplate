@@ -12,12 +12,9 @@ gulp.task('aot:sass', function() {
         .pipe(gulp.dest('app'));
 });
 
-gulp.task('aot:compile', ['aot:sass'], function() {
+gulp.task('aot:compile', ['aot:sass'], function(done) {
     exec('./node_modules/.bin/ngc -p tsconfig.aot.json', function(err, stdout, stderr) {
-        console.log(stdout);
-        console.log(stderr);
-
-        return !err;
+        done();
     });
 });
 
