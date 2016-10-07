@@ -1,9 +1,10 @@
 import { Component } from "@angular/core";
 
 @Component({
+    moduleId: module.id,
     selector: "dashboard",
-    templateUrl: "./app/components/app/app.component.html",
-    styleUrls: ["./app/components/app/app.component.css"]
+    templateUrl: "app.component.html",
+    styleUrls: ["app.component.css"]
 })
 
 export class AppComponent { }
