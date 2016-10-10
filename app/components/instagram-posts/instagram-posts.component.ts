@@ -3,9 +3,10 @@ import { InstagramPost } from "../../models/instagram-post";
 import { InstagramService } from "../../services/instagram.service";
 
 @Component({
+    moduleId: module.id,
     selector: "instagram-posts",
-    templateUrl: "./app/components/instagram-posts/instagram-posts.component.html",
-    styleUrls: ["./app/components/instagram-posts/instagram-posts.component.css"]
+    templateUrl: "instagram-posts.component.html",
+    styleUrls: ["instagram-posts.component.css"]
 })
 
 export class InstagramPostsComponent implements OnInit {

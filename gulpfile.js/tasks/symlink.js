@@ -23,7 +23,7 @@ gulp.task('symlink:index', function() {
     gulp.src('release/index.html')
         .pipe(htmlReplace({
             'js': {
-                src: [['lib/helpers.min.'+currentDateTimeStamp+'.js']],
+                src: [['app/main.'+currentDateTimeStamp+'.js']],
                 tpl: '<script>var currentDateTimeStamp = '+currentDateTimeStamp+';</script><script src="%s" async></script>'
             },
             'analytics': {
@@ -61,6 +61,10 @@ gulp.task('symlink:helpers', ['symlink:index'], function() {
 
 gulp.task('symlink:clean', ['symlink:helpers'], function() {
     return del([
+            'release/app/**/*.ts',
+            'release/app/**/*.scss',
+            'release/maps',
+            'release/lib',
             'release/app/main.js',
             'release/app/main.css',
             'release/app/services',

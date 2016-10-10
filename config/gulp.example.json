@@ -6,5 +6,10 @@
         "password": "SSH_PASSWORD"
     },
     "googleKey": "your-google-site-verification-key",
-    "rootDir": "/your/server/www/root/dir"
+    "rootDir": "/your/server/www/root/dir",
+    "cloudflare": {
+        "zoneId": "ZONE_ID",
+        "apiKey": "API_KEY",
+        "email": "ACCOUNT_EMAIL"
+    }
 }

@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "es2015",
+        "moduleResolution": "node",
+        "sourceMap": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "removeComments": false,
+        "noImplicitAny": false,
+        "suppressImplicitAnyIndexErrors": true
+    },
+    "compileOnSave": false,
+    "buildOnSave": false,
+    "files": [
+        "app-build/components/app/app.module.ts",
+        "app-build/main.ts",
+        "typings/index.d.ts"
+    ],
+    "angularCompilerOptions": {
+        "genDir": ".",
+        "skipMetadataEmit": true
+    }
+}

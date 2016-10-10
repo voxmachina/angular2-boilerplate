@@ -1,9 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 
 @Component({
+    moduleId: module.id,
     selector: "contact-section",
-    templateUrl: "./app/components/contact/contact.component.html",
-    styleUrls: ["./app/components/contact/contact.component.css"]
+    templateUrl: "contact.component.html",
+    styleUrls: ["contact.component.css"]
 })
 
 export class ContactComponent { }
