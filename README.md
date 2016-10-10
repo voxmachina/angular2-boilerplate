@@ -16,7 +16,17 @@ Latest performance results from [WebPageTest](https://www.webpagetest.org/)
 
 The live version of this boilerplate it's actually my own personal website at: http://igeni.us, so feel free to test it for yourself ;)
 
+## About
 
+This implements a simple personal website with three pages, reading content from json endpoints from Medium, Instagram and Github; then there's an about page and a contacts page.
+
+The front-end section is build with Angular2, the back-end uses PHP to deliver the results and also cache them locally, also provides all the necessary .htaccess files and rules to make the app work properly.
+
+The project uses a series of methods and mechanisms to achieve top performance and speed, and all is manageable through simple Gulp tasks; the only more complex task is the task that performs the Angular AoT compilation mechanism which replaces the app entry code by updating some imports, it was a hacky solution to achieve conditional imports because that is something that Typescript does not support.
+
+Another complex mechanism is added as a task also to deliver a first version of the content for the above-the-fold target, which basically transforms index.html into an index.php with the top menu bar and only loads through PHP the Medium feed, a barely perceived difference on good connections, but on slow connections it makes all the difference between someone leaving your site or start reading something right away and staying for more. 
+
+You can read all about this project story on Medium: ToDo
 
 ## Dependencies
 
@@ -64,3 +74,10 @@ The live version of this boilerplate it's actually my own personal website at: h
   - Task to test your build before deploying
 - `gulp deploy`
   - Task to deploy a new release to your server, creating a new symlink and keeping older versions for a rollback if needed
+
+
+
+## License
+
+MIT
+
