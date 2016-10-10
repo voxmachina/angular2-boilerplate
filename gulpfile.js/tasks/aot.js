@@ -4,6 +4,7 @@ const gulp = require('gulp');
 const sass = require('gulp-sass');
 const exec = require('child_process').exec;
 const del = require('del');
+const replace = require('gulp-replace');
 
 gulp.task('aot:copy', function() {
     return gulp.src(['app/**/*'], {
@@ -11,7 +12,36 @@ gulp.task('aot:copy', function() {
     }).pipe(gulp.dest('app-build/'));
 });
 
-gulp.task('aot:sass', ['aot:copy'], function() {
+gulp.task('aot:transform', ['aot:copy'], function() {
+    return gulp.src(['app-build/main.js', 'app-build/main.ts'])
+        .pipe(replace(
+            'import { platformBrowserDynamic } from "@angular/platform-browser-dynamic"',
+            'import { platformBrowser } from "@angular/platform-browser"'
+        ))
+        .pipe(replace(
+            'import { AppModule } from "./components/app/app.module"',
+            'import { AppModuleNgFactory } from "./components/app/app.module.ngfactory"'
+        ))
+        .pipe(replace(
+            'var platform = platformBrowserDynamic();',
+            ''
+        ))
+        .pipe(replace(
+            'const platform = platformBrowserDynamic();',
+            ''
+        ))
+        .pipe(replace(
+            'platform.bootstrapModule(AppModule)',
+            'platformBrowser().bootstrapModuleFactory(AppModuleNgFactory)'
+        ))
+        .pipe(replace(
+            '// <enableProdMode>',
+            'enableProdMode();'
+        ))
+        .pipe(gulp.dest('app-build'));
+});
+
+gulp.task('aot:sass', ['aot:transform'], function() {
     return gulp
         .src(['app-build/**/*.scss'])
         .pipe(sass())
@@ -30,8 +60,4 @@ gulp.task('aot:replace', function() {
     }).pipe(gulp.dest('release/app'));
 });
 
-gulp.task('aot', ['aot:compile'], function() {
-    // return gulp.src(['app-build/**/*'], {
-    //     dot: true
-    // }).pipe(gulp.dest('release/app'));
-});
+gulp.task('aot', ['aot:compile']);

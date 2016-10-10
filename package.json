@@ -51,6 +51,7 @@
     "gulp-html-replace": "1.6.1",
     "gulp-inline-ng2-template": "3.0.1",
     "gulp-rename": "1.2.2",
+    "gulp-replace": "0.5.4",
     "gulp-sass": "2.3.2",
     "gulp-sourcemaps": "1.6.0",
     "gulp-ssh": "0.6.0",
