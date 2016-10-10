@@ -3,6 +3,7 @@ import { MediumPost } from "../../models/medium-post";
 import { MediumService } from "../../services/medium.service";
 
 @Component({
+    moduleId: module.id,
     selector: "medium-posts",
     templateUrl: "medium-posts.component.html",
     styleUrls: ["medium-posts.component.css"]

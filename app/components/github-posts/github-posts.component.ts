@@ -3,6 +3,7 @@ import { GithubPost } from "../../models/github-post";
 import { GithubService } from "../../services/github.service";
 
 @Component({
+    moduleId: module.id,
     selector: "github-posts",
     templateUrl: "github-posts.component.html",
     styleUrls: ["github-posts.component.css"]

@@ -12,7 +12,16 @@ gulp.task('aot:copy', function() {
     }).pipe(gulp.dest('app-build/'));
 });
 
-gulp.task('aot:transform', ['aot:copy'], function() {
+gulp.task('aot:transform:clean', ['aot:copy'], function() {
+    return gulp.src(['app-build/**/*.js', 'app-build/**/*.ts'])
+        .pipe(replace(
+            'moduleId: module.id,',
+            ''
+        ))
+        .pipe(gulp.dest('app-build'));
+});
+
+gulp.task('aot:transform', ['aot:transform:clean'], function() {
     return gulp.src(['app-build/main.js', 'app-build/main.ts'])
         .pipe(replace(
             'import { platformBrowserDynamic } from "@angular/platform-browser-dynamic"',
