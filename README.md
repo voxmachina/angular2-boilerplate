@@ -30,6 +30,7 @@ The live version of this boilerplate it's actually my own personal website at: h
 ## Installation
 
 - `npm install`
+- navigate to: api/www/services/content and do `composer install`
 
 
 
@@ -49,12 +50,14 @@ The live version of this boilerplate it's actually my own personal website at: h
 
 - `npm start` , starts the front-end server
 - `sh api/www/services/start` , starts the backend server
-  - Before: `api/build -t ngboilerplate` to build the image, you only need to do this once, be sure to configure the start script also included in the api folder.
+  - Before: navigate to api folder and do: `docker build -t ngboilerplate .` to build the image, you only need to do this once, be sure to configure the start script also included in the api folder and [start your docker service](https://docs.docker.com/engine/admin/).
 
 
 
 ## Tasks
 
+- `gulp build`
+  - Task to perform to do a simple build and test the site with `npm start` afterwards
 - `gulp dev`
   - Task to be used while developing
 - `gulp stage`
