@@ -38,8 +38,11 @@ gulp.task('clean:release', function(cb) {
 });
 
 gulp.task('clean', ['clean:helpers', 'clean:release'], function(cb) {
-    del('aot', cb);
-    del('dist', cb);
-    del('build', cb);
-    del('release', cb);
+    return del([
+        'aot',
+        'app-build',
+        'dist',
+        'build',
+        'release'
+    ]);
 });

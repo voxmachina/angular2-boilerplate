@@ -5,11 +5,17 @@ const sass = require('gulp-sass');
 const exec = require('child_process').exec;
 const del = require('del');
 
-gulp.task('aot:sass', function() {
+gulp.task('aot:copy', function() {
+    return gulp.src(['app/**/*'], {
+        dot: true
+    }).pipe(gulp.dest('app-build/'));
+});
+
+gulp.task('aot:sass', ['aot:copy'], function() {
     return gulp
-        .src(['app/**/*.scss'])
+        .src(['app-build/**/*.scss'])
         .pipe(sass())
-        .pipe(gulp.dest('app'));
+        .pipe(gulp.dest('app-build'));
 });
 
 gulp.task('aot:compile', ['aot:sass'], function(done) {
@@ -18,9 +24,14 @@ gulp.task('aot:compile', ['aot:sass'], function(done) {
     });
 });
 
+gulp.task('aot:replace', function() {
+    return gulp.src(['app-build/**/*'], {
+        dot: true
+    }).pipe(gulp.dest('release/app'));
+});
+
 gulp.task('aot', ['aot:compile'], function() {
-    return del([
-        'app/**/*.css',
-        'app/**/*.js'
-    ]);
+    // return gulp.src(['app-build/**/*'], {
+    //     dot: true
+    // }).pipe(gulp.dest('release/app'));
 });

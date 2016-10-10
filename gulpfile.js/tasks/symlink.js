@@ -61,6 +61,10 @@ gulp.task('symlink:helpers', ['symlink:index'], function() {
 
 gulp.task('symlink:clean', ['symlink:helpers'], function() {
     return del([
+            'release/app/**/*.ts',
+            'release/app/**/*.scss',
+            'release/maps',
+            'release/lib',
             'release/app/main.js',
             'release/app/main.css',
             'release/app/services',
