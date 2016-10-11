@@ -1,1 +1,1 @@
-docker run -p 8080:80 -d -v /home/billy/Desktop/dev/igenius/api/www/services:/var/www/ngboilerplate/services ngboilerplate
+docker run -p 8080:80 -d -v /Users/pedro/Desktop/dev/ng-boilerplate/api/www/services:/var/www/ngboilerplate/services ngboilerplate
