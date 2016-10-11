@@ -60,7 +60,8 @@ You can read all about this project story on Medium: ToDo
 
 - `npm start` , starts the front-end server, be sure to have a build first with `gulp build`
 - Configure your back-end server:
-  - Navigate to api folder and do: `docker build -t ngboilerplate .` to build the image, you only need to do this once, be sure to configure the start script also included in the api folder and [start your docker service](https://docs.docker.com/engine/admin/).
+  - [Start your docker service](https://docs.docker.com/engine/admin/).
+  - Navigate to api folder and do: `docker build -t ngboilerplate .` to build the image, you only need to do this once.
   - Configure your shared folder path both in api/start script
   - `sh api/start` , starts the back-end server
 
