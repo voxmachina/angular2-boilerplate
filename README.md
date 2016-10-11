@@ -22,11 +22,11 @@ This implements a simple personal website with three pages, reading content from
 
 The front-end section is build with Angular2, the back-end uses PHP to deliver the results and also cache them locally, also provides all the necessary .htaccess files and rules to make the app work properly.
 
-The project uses a series of methods and mechanisms to achieve top performance and speed, and all is manageable through simple Gulp tasks; the only more complex task is the task that performs the Angular AoT compilation mechanism which replaces the app entry code by updating some imports, it was a hacky solution to achieve conditional imports because that is something that Typescript does not support.
+The project uses a series of methods and mechanisms to achieve top performance and speed, and all is manageable through simple Gulp tasks; the only more complex task is the task that performs the Angular AoT compilation mechanism which replaces the app entry code by updating some imports, as it was a hacky solution to achieve conditional imports because that is something that Typescript does not support.
 
 Another complex mechanism is added as a task also to deliver a first version of the content for the above-the-fold target, which basically transforms index.html into an index.php with the top menu bar and only loads through PHP the Medium feed, a barely perceived difference on good connections, but on slow connections it makes all the difference between someone leaving your site or start reading something right away and staying for more. 
 
-You can read all about this project story on Medium: ToDo
+If you're interested you can read all about this project story on Medium: ToDo
 
 ## Dependencies
 
@@ -77,7 +77,22 @@ You can read all about this project story on Medium: ToDo
   - Task to test your build before deploying
 - `gulp deploy`
   - Task to deploy a new release to your server, creating a new symlink and keeping older versions for a rollback if needed
+- `gulp clean`
+  - Task to clean temporary build folders and files
 
+
+
+
+## Above the fold content optimization
+
+These files represent what is first loaded into the page initially:
+
+- config/critical.scss
+- config/critical.html
+
+The content of these files will later be injected into the index file at the moment of a deploy, this index.html will be moved into an index.php file and load the latest Medium only posts from the cached json file.
+
+You'll need to keep these in sync with changes/updates you do to your designs, layout and data.
 
 
 ## License
