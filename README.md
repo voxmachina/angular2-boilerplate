@@ -26,7 +26,7 @@ The project uses a series of methods and mechanisms to achieve top performance a
 
 Another complex mechanism is added as a task also to deliver a first version of the content for the above-the-fold target, which basically transforms index.html into an index.php with the top menu bar and only loads through PHP the Medium feed, a barely perceived difference on good connections, but on slow connections it makes all the difference between someone leaving your site or start reading something right away and staying for more. 
 
-You can read all about this project story on Medium: ToDo
+You can read all about this project story on [Medium](https://medium.com/dinomad/angular2-boilerplate-on-steroids-86dcf7390542#.8ekof7gjh)
 
 ## Dependencies
 
