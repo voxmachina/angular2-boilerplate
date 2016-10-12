@@ -1,3 +1,5 @@
+/*jslint node: true, esversion: 6 */
+
 "use strict";
 
 const gulp = require('gulp');
@@ -46,14 +48,27 @@ gulp.task('copy:rxjs', function() {
 });
 
 /**
+ * Copy html files to build directory in watch mode
+ */
+gulp.task('copy:html:watch', function() {
+    return gulp.src([
+        './**/*.html',
+        './index.html',
+        '!api/**/*',
+        '!build/**/*',
+        '!node_modules/**/*'
+    ]).pipe(gulp.dest('build'));
+});
+
+/**
  * Copy html files to build directory
  */
 gulp.task('copy:html', function() {
     return gulp.src([
         './**/*.html',
-        '!./build/**/*.html',
-        '!./node_modules/**/*.html',
-        '!./api/**/*.html',
+        '!./build/**/*',
+        '!./node_modules/**/*',
+        '!./api/**/*',
         '.htaccess',
         config.googleKey + '.html'
     ]).pipe(gulp.dest('build'));
