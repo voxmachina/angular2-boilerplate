@@ -1,3 +1,5 @@
+/*jslint node: true, esversion: 6 */
+
 "use strict";
 
 const gulp = require('gulp');
@@ -21,7 +23,7 @@ gulp.task('compile:typescript', function() {
  */
 gulp.task('compile:sass', function() {
     return gulp
-        .src(['./**/*.scss', '!build/**/*.scss', '!node_modules/**/*'])
+        .src(['./**/*.scss', '!build/**/*', '!node_modules/**/*', '!api/**/*'])
         .pipe(sourcemaps.init())
         .pipe(sass())
         .pipe(sourcemaps.write("maps"))
